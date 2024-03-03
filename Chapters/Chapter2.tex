@@ -23,7 +23,7 @@
         \item Obtener un módulo sin problemas de \textit{timing} por \textit{setup} o \textit{hold} en las señales de entrada y salida.
         \item La implementación del sistema no debe ocupar más del 3000 \textit{Logic Array Blocks} en la FPGA\@.
     \end{enumerate}
-    \item Metodologı́a de trabajo
+    \item Metodología de trabajo
     \begin{enumerate}
         \item Control de versiones mediante SVN o Git.
         \item Desarrollo en Quartus con licencias para análisis de \textit{timing} y simulaciones o herramientas \textit{open source}.
@@ -37,6 +37,87 @@
         \item Confección de documentación de uso del módulo.
     \end{enumerate}
 \end{enumerate}
+
+\section{Nociones básicas del sistema}
+
+\subsection{Formato de datos}
+
+En aplicaciones SD y ED, el formato de datos serie se define con un ancho de 10 bits,
+mientras que en aplicaciones HD es de 20 bits, divididos en dos flujos de datos paralelos
+de 10 bits cada uno (conocidos como Y y C). El flujo de datos SD se organiza de la
+siguiente manera:
+
+\begin{verbatim}
+Cb Y Cr Y' Cb Y Cr Y'
+\end{verbatim}
+
+Mientras que los flujos de datos HD se organizan así:
+
+\begin{verbatim}
+Y
+Y Y' Y Y' Y Y' Y Y'
+C
+Cb Cr Cb Cr Cb Cr Cb Cr
+\end{verbatim}
+
+Para todas las interfaces digitales serie (excluyendo las codificaciones compuestas
+obsoletas), la codificación de color nativa es el formato YCbCr 4:2:2. El canal de
+luminancia (Y) se codifica con un ancho de banda completo (13.5 MHz en SD de 270 Mbit/s,
+~75 MHz en HD), y los dos canales de crominancia (Cb y Cr) se submuestrean horizontalmente
+y se codifican con la mitad de ancho de banda (6.75 MHz o 37.5 MHz). Las muestras Y, Cr y
+Cb están co-situadas (adquiridas en el mismo instante de tiempo), y la muestra Y' se
+adquiere en el momento intermedio entre dos muestras Y adyacentes.
+
+En lo anterior, Y se refiere a muestras de luminancia, y C a muestras de crominancia. Cr y
+Cb se refieren además a los canales de diferencia de color rojo y azul; ver vídeo por
+componentes para más información. Esta sección solo discute la codificación de color nativa
+de SDI\@; otras codificaciones de color son posibles tratando la interfaz como un canal de
+datos de 10 bits genérico. El uso de otras codificaciones de colorimetría, y la conversión
+a y desde el espacio de color RGB, se discute a continuación.
+
+La carga útil de vídeo (así como la carga útil de datos auxiliares) puede usar cualquier
+palabra de 10 bits en el rango de 4 a 1,019 (004\textsubscript{16} a 3FB\textsubscript{16})
+inclusive; los valores 0–3 y 1,020–1,023 (3FC\textsubscript{16}–3FF\textsubscript{16}) están
+reservados y no pueden aparecer en ninguna parte de la carga útil. Estas palabras reservadas
+tienen dos propósitos; se utilizan tanto para paquetes de sincronización como para cabeceras
+de datos auxiliares.
+
+\subsection{Paquetes de Sincronización}
+
+Un paquete de sincronización (comúnmente conocido como la señal de referencia de tiempo o TRS)
+ocurre inmediatamente antes de la primera muestra activa en cada línea, e inmediatamente después
+de la última muestra activa (y antes del inicio de la región de borrado horizontal). El paquete
+de sincronización consta de cuatro palabras de 10 bits, las primeras tres palabras siempre son
+las mismas: 3FF\textsubscript{16}, 0, 0; la cuarta consta de 3 bits de bandera, junto con un código de corrección
+de errores. Como resultado, hay 8 paquetes de sincronización diferentes posibles.
+
+En las interfaces HD-SDI y de enlace dual, los paquetes de sincronización deben ocurrir
+simultáneamente en ambos flujos de datos Y y C. (Se permite cierto retraso entre los dos cables
+en una interfaz de enlace dual; se espera que el equipo que soporta enlace dual almacene en
+búfer el enlace líder para permitir que el otro enlace se ponga al día). En interfaces SD-SDI y
+de definición mejorada, solo hay un flujo de datos, y por lo tanto, solo un paquete de
+sincronización a la vez. Aparte del tema de cuántos paquetes aparecen, su formato es el mismo en
+todas las versiones de la interfaz digital-serial.
+
+Los bits de bandera encontrados en la cuarta palabra (comúnmente conocida como la palabra XYZ)
+son conocidos como H, F y V. El bit H indica el inicio del borrado horizontal; y los bits de
+sincronización que preceden inmediatamente a la región de borrado horizontal deben tener H
+establecido en uno. Tales paquetes se conocen comúnmente como paquetes de Fin de Vídeo Activo, o
+paquetes EAV\@. De manera similar, el paquete que aparece inmediatamente antes del inicio del vídeo
+activo tiene H establecido en 0; este es el paquete de Inicio de Vídeo Activo o paquete SAV\@.
+
+De manera similar, el bit V se utiliza para indicar el inicio de la región de borrado vertical; un
+paquete EAV con V=1 indica que la siguiente línea (las líneas se consideran que comienzan con el
+paquete SAV) será la primera línea del borrado vertical. De manera similar, un paquete SAV con V=1
+indica que la línea actual es la primera línea del vídeo activo después del borrado vertical. Los
+paquetes SAV/EAV con V=0 indican líneas dentro de la región de vídeo activo, o dentro de la región
+de borrado horizontal, pero no el inicio o el final de ninguna de estas regiones.
+
+El bit F se utiliza para distinguir entre campos en formatos entrelazados o segmentados
+progresivamente. En formatos progresivos, F siempre es 0. En formatos entrelazados o segmentados
+progresivamente, F es 0 para todas las líneas en el primer campo o segmento, y 1 para todas las
+líneas en el segundo campo o segmento. (La designación de cuál de los dos campos o segmentos se
+considera el primero es arbitraria).
 
 \section{Estructura general del sistema y diagrama en bloques}
 
@@ -60,7 +141,7 @@ interpretar, acondicionar y validar la señal. Esta parte del desarrollo se
 encarga principalmente de la sincronización de paquetes y de la detección de
 errores. Aunque la interfaz funciona en un solo sentido a la vez, debe ser
 configurable para funcionar como transmisor y receptor de manera separada, como
-se ilustra en la figura~\ref{fig:sdi}. Por lo tanto, el módulo debe ser capaz
+se ilustra en la figura~\ref{fig:sdi1}. Por lo tanto, el módulo debe ser capaz
 de tomar la señal serie que llega a la FPGA desde el \textit{driver} del cable,
 deserializarla y procesarla en un sentido y empaquetarla la señal acorde al
 protocolo y serializarla en el otro sentido.
@@ -69,29 +150,25 @@ protocolo y serializarla en el otro sentido.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{./Figures/sdi.jpg}
-    \caption{Diagrama en bloques general de interfaz digital serie}\label{fig:sdi}
+    \caption{Diagrama en bloques general de interfaz digital serie}\label{fig:sdi1}
 \end{figure}
 \vspace{1cm}
-
-\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage{enumitem}
 
 \section{Estándares soportados por la interfaz}
 
 El módulo soporta SMPTE SD/HD/3G-SDI implementa tres estándares de la interfaz:
 
-\begin{itemize}[label=--]
-    \item SD-SDI (SMPTE ST 259): Señal digital de televisión estándar.
-    \item HD-SDI (SMPTE ST 292\-1): Interfaz serie de señal de 1.5 Gb/s.
-    \item 3G-SDI (SMPTE ST 424): Interfaz serie de señal de 3 Gb/s.
+\begin{itemize}
+    \item SD-SDI (SMPTE ST 259 \citep{st259}): Señal digital de televisión estándar.
+    \item HD-SDI (SMPTE ST 292\-1 \citep{st292}): Interfaz serie de señal de 1.5 Gb/s.
+    \item 3G-SDI (SMPTE ST 424 \citep{st424}): Interfaz serie de señal de 3 Gb/s.
 \end{itemize}
 
 \subsection{Definición estándar}
 
 El módulo está diseñado para soportar la tasa de bits de 270 Mb/s y es compatible
 con el estándar de detección y manejo de errores o EDH (del inglés, Error
-Detection and Handling) SMPTE RP 165 para las secciones de recepción y transmisión.
+Detection and Handling) SMPTE RP 165 \citep{st165} para las secciones de recepción y transmisión.
 
 \subsection{Alta definición}
 
@@ -115,18 +192,105 @@ línea para 3G-SDI\@.
 \subsection{Identificación de carga útil y soporte de datos auxiliares}
 
 El módulo implementa una capacidad de inserción de paquetes de datos auxiliares
-de identificación de carga útil SMPTE ST 352 para el transmisor que funciona en
+de identificación de carga útil SMPTE ST 352 \citep{st352} para el transmisor que funciona en
 todos los 3 modos SDI ya mencionados. El lado receptor también detecta y captura
 los cuatro bytes de datos de los paquetes de identificación de carga útil ST 352.
 
 Además, implementa la inserción de paquetes de datos auxiliares antes de la
 transmisión. Aunque módulo no proporciona una capacidad de inserción de paquetes
 de datos auxiliares, excepto para los paquetes de identificación de carga útil
-ST 352, tiene puertos de datos necesarios para permitir que la inserción de
+ST 352 \citep{st352}, tiene puertos de datos necesarios para permitir que la inserción de
 paquetes de datos auxiliares sea implementada por el usuario. En el lado del
 receptor, todos los datos auxiliares insertados son preservados por el receptor.
 El módulo pueden procesar el flujo de datos SDI recibidos y/o modificar los datos
 auxiliares según sea necesario.
 
-\section{Submódulos del sistema}
+\section{Simulación y Verificación}
 
+La verificación y validación de código y modelos por medio de simulación es
+un aspecto crucial para garantizar calidad y reducir tiempos de desarrollo,
+sobre todo en sistemas críticos. La verificación garantiza con simulaciones y
+permite la corrección del código, antes de hacer pruebas en el mundo real, que
+son más lentas y costosas. La validación se relaciona con la conexión del
+desarrollo con el mundo real y su uso previsto, implica contar con el
+\textit{hardware} y el instrumental de medición. Además, en sistemas de alta
+complejidad la simulación permite probar cada módulo por separado, técnica que
+facilita la integración y permite distinguir con claridad los errores, lo que
+acelera proceso de aprendizaje y comprensión del sistema. Por otro lado al ser
+capaces de simular datos de cierto modelo, se garantiza que uno entiende el
+modelo, sus restricciones y limitaciones.
+
+\vspace{1cm}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{./Figures/verif.png}
+    \caption{Diagrama pasos a seguir para diseñar, implementar y verificar un proyecto}\label{fig:sdi}
+\end{figure}
+\vspace{1cm}
+
+% En este trabajo se llevaron a cabo test unitarios para cada módulo básico del
+% desarrollo e incluso aquellos que integraban varios submódulos, usando GHDL,
+% cocotb e integración continua en Github, pero para la verificación del sistema
+% completo fue necesario usar Quartus y ModelSim, ya que no se contaba con los
+% modelos de los Transceivers debido a que son herramientas propietarias.
+
+Los \textit{test} unitarios son las pruebas a nivel de código y ayuda a eliminar
+problemas en una etapa temprana, principalmente el desarrollador es responsable
+de realizarla para su código.
+
+Los \textit{test} funcionales están asociados con la fase de diseño de bajo nivel
+que garantiza que las módulos de códigos y unidades estén trabajando correctamente
+para ejecutar nuevas funciones o servicios.
+
+Los \textit{test} de integración está asociada con la fase de diseño de alto
+nivel. Los \textit{test} de integración garantizan la integración entre todos
+los módulos del sistema después de agregar nuevas funciones o actualizaciones.
+
+Los \textit{test} de sistema están asociados con los requisitos y la fase de
+diseño del sistema. Combina el software, el hardware y la integración de este
+sistema con otros sistemas externos.
+
+Los \textit{test} de aceptación del usuario están asociados con la fase de
+análisis empresarial y operativo. Los usuarios clientes son los principales
+ejecutores de esta prueba basada en casos de prueba y escenarios que cubren los
+requisitos comerciales para garantizar que se haya entregado el producto correcto
+según las especificaciones.
+
+Debido a que al momento de la ejecución de este desarrollo no se sigue contando
+con el equipamiento de la empresa VideoSwitch, se puso especial énfasis en las
+primeras etapas, ejecutando los \textit{test} a nivel sistema solo de forma
+parcial y dejando de lado los \textit{test} de aceptación.
+
+\section{Integración continua}
+
+La integración continua o CI (del inglés, \textit{continuous integration}) es una
+práctica que nace de la ingeniería de software, pero que en los últimos años se
+a ido extendiendo a otras ramas de la ingeniería, que consiste en hacer
+integraciones automáticas de un proyecto con cierta regularidad para así poder
+detectar errores cuanto antes. Se entiende por integración la compilación o
+síntesis y ejecución de pruebas de un proyecto completo y sus subsistemas. 
+
+Por lo general se necesita un sistema de control de versiones que acompañe y
+ejecute del proceso de CI\@. Los mismos también se complementan con otras
+comprobaciones como las pruebas automatizadas de calidad del código, las
+herramientas de revisión de estilo de sintaxis, entre otras.
+
+Para pasar en limpio, los beneficios comúnmente citados de la integración
+continua incluyen:
+\begin{itemize}
+  \item Detección temprana y mejorada de errores, y métricas que le permiten
+  abordar los errores a tiempo, a veces tras solo unos minutos de la incorporación.
+  \item Progreso continuo y demostrado para mejorar la retroalimentación.
+  \item Mejor colaboración en equipo: todos los miembros del equipo pueden.
+  cambiar el código, integrar el sistema y determinar rápidamente los conflictos
+  con otras partes del del mismo.
+  \item Integración mejorada del sistema, lo que reduce las sorpresas al final
+  del ciclo de vida del desarrollo.
+  \item Menos cambios paralelos para la fusión y prueba.
+  \item Reducción de cantidad de errores durante las pruebas del sistema.
+  \item Sistemas actualizados constantemente en los que realizar las pruebas.
+\end{itemize}
+
+En el caso de este trabajo se optó por usar Git como sistema de control de
+versiones, más específicamente Github, que con Github Actions también entrega
+la funcionalidad de integración continua.

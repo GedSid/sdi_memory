@@ -208,9 +208,9 @@
 \RequirePackage{xcolor}
 \RequirePackage{subcaption}
 
-\addbibresource{references.bib} % The filename of the bibliography
+% \addbibresource{references.bib} % The filename of the bibliography
 
-\urlstyle{same}
+% \urlstyle{same}
 \hyphenation{biblatex}
 
 \RequirePackage[
