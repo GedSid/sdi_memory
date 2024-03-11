@@ -17,13 +17,11 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
       \item Controlador del \textit{transceiver}.
   \end{itemize}
 
-  % \vspace{1cm}
   % \begin{figure}[htbp]
   %     \centering
   %     \includegraphics[width=\linewidth]{./Figures/sdi.png}
   %     \caption{Diagrama en bloques general de interfaz digital serie}\label{fig:sdi2}
   % \end{figure}
-  % \vspace{1cm}
 
   El diseño se centró en el bloque de protocolo, ya que se supuso que se contaría con
   una FPGA que provea los otros dos, para la estructura general referirse a la
@@ -51,7 +49,7 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
       \includegraphics[width=\linewidth]{./Figures/tx_xcvr.png}
       \caption{Diagrama en bloques del transmisor de la interfaz digital serie.}\label{fig:tx_xcvr}
   \end{figure}
-  \vspace{1cm}
+  % \vspace{1cm}
 
   % \vspace{1cm}
   \begin{figure}[htbp]
@@ -59,7 +57,7 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
       \includegraphics[width=\linewidth]{./Figures/sdi_tx.png}
       \caption{Diagrama en bloques del \textit{Transceiver} del transmisor.}\label{fig:sdi_tx}
   \end{figure}
-  \vspace{1cm}
+  % \vspace{1cm}
 
   El transmisor realiza las siguientes funciones:
   \begin{itemize}
@@ -92,7 +90,7 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
       \includegraphics[width=\linewidth]{./Figures/sdi_rx.png}
       \caption{Diagrama en bloques del receptor de la interfaz digital serie.}\label{fig:sdi_rx}
   \end{figure}
-  \vspace{1cm}
+  % \vspace{1cm}
 
   % \vspace{1cm}
   \begin{figure}[htbp]
@@ -100,7 +98,7 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
       \includegraphics[width=\linewidth]{./Figures/rx_xcvr.png}
       \caption{Diagrama en bloques del \textit{Transceiver} del receptor.}\label{fig:rx_xcvr}
   \end{figure}
-  \vspace{1cm}
+  % \vspace{1cm}
 
   El receptor realiza las siguientes funciones:
   \begin{itemize}
@@ -134,8 +132,8 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
   de video paralelo muestrea y procesa la siguiente entrada de video paralelo:
   \begin{itemize}
       \item SD-SDI\@: 27 MHz
-      \item HD-SDI\@: 74.25 o 74.175 MHz
-      \item 3G-SDI\@: 148.5 o 148.35 MHz
+      \item HD-SDI\@: 74,25 o 74,175 MHz
+      \item 3G-SDI\@: 148,5 o 148,35 MHz
   \end{itemize}
 
   El \textit{transceivers} utiliza el reloj de referencia del transmisor para
@@ -155,10 +153,10 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
       \toprule
       \textbf{Estándar de Video}  & \textbf{Frecuencia de Reloj (MHz)} \\
       \midrule
-      SD-SDI                      & 67.5 \\
-      HD-SDI                      & 74.175 o 74.25 \\
-      HD-SDI (sobremuestreo)      & 148.35 o 148.5 \\
-      3G-SDI                      & 148.35 o 148.5 \\
+      SD-SDI                      & 67,5 \\
+      HD-SDI                      & 74,175 o 74,25 \\
+      HD-SDI (sobremuestreo)      & 148,35 o 148,5 \\
+      3G-SDI                      & 148,35 o 148,5 \\
       \bottomrule
     \end{tabular}
   \end{table}
@@ -251,11 +249,11 @@ Este módulo es puramente combinacional y no contiene registros de retardo.
   Codificador NRZ a NRZI \texttt{nrz\_2\_nrzi}.
 
   La salida es de 20 bits, pero para SD, solo los 10 bits menos significativos
-  (LSB) son válidos. El módulo utiliza un reloj de 74.25 MHz.
+  (LSB) son válidos. El módulo utiliza un reloj de 74,25 MHz.
 
 \subsection{Receptor verificación de redundancia cíclica}
 
-  Este módulo calcula el valor CRC (del inglés, Cyclic Redundancy Check) para una línea y lo compara con el valor CRC
+  Este módulo calcula el valor CRC (del inglés, \textit{Cyclic Redundancy Check}) para una línea y lo compara con el valor CRC
   recibido. El módulo realiza esta operación tanto para los canales Y como para C.
   Si se detecta un error CRC, la salida correspondiente de error CRC se activa en
   alto. Esta salida permanece activada durante el tiempo de una línea de video,
@@ -288,7 +286,7 @@ para video. Este módulo realiza el formateo en los datos decodificados.
 
 \subsubsection{Detector HD señal de referencia de tiempo y codificador de desplazamiento}
 
-El detector HD TRS (del inglés, Timing Reference signal) identifica la secuencia
+El detector HD TRS (del inglés, \textit{Timing Reference signal}) identifica la secuencia
 TRS de 60 bits que consiste en 20 `unos' seguidos por 40 `ceros'. El detector tiene
 dos niveles principales: un detector de `unos' y un detector de `ceros'.
 
@@ -310,7 +308,7 @@ dos niveles principales: un detector de `unos' y un detector de `ceros'.
 
 \subsubsection{Detector SD señal de referencia de tiempo}
 
-El detector SD TRS (del inglés, Timing Reference signal) encuentra preámbulos TRS de 30 bits (3ff\textsubscript{16},
+El detector SD TRS encuentra preámbulos TRS de 30 bits (3ff\textsubscript{16},
 000\textsubscript{16}, 000\textsubscript{16}) en
 la secuencia de datos de entrada.
 
@@ -332,7 +330,7 @@ la secuencia de datos de entrada.
 
 Este módulo cambia el formato del valor de número de línea de 11 bits en dos
 palabras de 10 bits y las inserta en sus posiciones adecuadas inmediatamente
-después de la palabra EAV (del inglés, End of Active Video)\@. El mismo valor
+después de la palabra EAV (del inglés, \textit{End of Active Video})\@. El mismo valor
 de número de línea se inserta en ambos canales de video.
 
 En el estándar SMPTE 292M, los números de línea de 11 bits deben formatearse en
@@ -363,11 +361,11 @@ Detecta el \textit{timing} de transporte y no necesariamente el formato de víde
 Cuenta palabras y líneas para determinar el estándar de vídeo. No depende de la
 inclusión de paquetes ANC (del inglés, \textit{Ancillary data}) que identifican el estándar de vídeo. Además, produce
 un valor de número de línea que cambia en el flanco de subida del reloj después
-de la palabra XYZ de la EAV (del inglés, End of Active Video), por lo que es válido para su inserción en el campo
+de la palabra XYZ de la EAV, por lo que es válido para su inserción en el campo
 \texttt{ln\_o} de un flujo HD-SDI\@.
 
 Solamente requiere como entrada uno de los canales del flujo de vídeo, ya sea Y
-o C y las señales decodificadas EAV  (del inglés, End of Active Video) y SAV (del inglés, Start of Active Video)\@.
+o C y las señales decodificadas EAV y SAV (del inglés, \textit{Start of Active Video})\@.
 
 Cuando cambie el estándar de vídeo de entrada, se deben enviar algunos fotogramas
 de vídeo (determinados por MAX\_ERRCNT) antes de comenzar el proceso de
@@ -384,10 +382,10 @@ El módulo genera las siguientes salidas:
 
 \begin{itemize}
     \item \textbf{locked:} indica cuando el módulo ha bloqueado al estándar de
-    vídeo entrante. Las salidas std y ln\_o solo son válidas cuando locked es 1. \\
+    vídeo entrante. Las salidas std y ln\_o solo son válidas cuando locked es 1.
     \item \textbf{std:} un código de 4 bits que indica qué formato de transporte
     se ha detectado, codificado de la siguiente manera (las tasas son tasas de
-    fotogramas): \\
+    fotogramas):
     \begin{itemize}
         \item 0000: SMPTE 260M 1035i           30 Hz
         \item 0001: SMPTE 295M 1080i           25 Hz
@@ -407,7 +405,7 @@ El módulo genera las siguientes salidas:
     \end{itemize}
     \item \textbf{ln\_o:} Un código de 11 bits de número de línea que indica el
     número de línea actual. Este código cambia en el flanco de subida del reloj
-    cuando tanto xyz como EAV  (del inglés, End of Active Video) están afirmados.
+    cuando tanto xyz como EAV están afirmados.
 \end{itemize}
 
 \subsection{Demultiplexor}
@@ -419,7 +417,7 @@ dos flujos de entrada de 10 bits a este módulo provienen directamente de las
 salidas C (\texttt{data\_y\_i}) y Y (\texttt{data\_c\_i}) de un módulo \texttt{sdi\_framer}.
 
 El módulo también genera señales de sincronización correctas para el vídeo,
-incluyendo señales TRS  (del inglés, Timing Reference signal), XYZ, EAV (del inglés, End of Active Video) y SAV (del inglés, Start of Active Video), así como información del número de
+incluyendo señales TRS, XYZ, EAV y SAV, así como información del número de
 línea capturada del flujo de datos.
 
 El módulo también crea una señal de habilitación de reloj de salida, dout\_rdy,
@@ -504,7 +502,7 @@ MHz. Para HD-SDI, acepta dos flujos de datos de 10 bits, Y y C, cada uno de
 10 bits. Clock Enable debe afirmarse cada dos ciclos de reloj para una tasa de
 transmisión de datos de entrada de 74,25 MHz. Para 3G-SDI nivel A, acepta dos
 flujos de datos de 10 bits. Clock Enable debe afirmarse cada dos ciclos de
-reloj para una tasa de transmisión de datos de entrada de 148.5 MHz.
+reloj para una tasa de transmisión de datos de entrada de 148.,5 MHz.
 
 Para 3G-SDI nivel B, acepta cuatro flujos de datos de 10 bits. Estos pueden ser
 un par de enlaces dobles SMPTE 372M o pueden ser dos señales HD-SDI
@@ -521,7 +519,7 @@ reloj y bajo durante dos ciclos de reloj.
 
 Este módulo inserta paquetes de identificación de carga de video SMPTE 352M~\citep{st352} en
 un flujo de video. El flujo puede ser tanto HD como SD, según lo indique la
-señal de entrada \texttt{hd\_sd}. El módulo sobrescribirá un paquete VPID  (del inglés, Video Packet ID) existente si la
+señal de entrada \texttt{hd\_sd}. El módulo sobrescribirá un paquete VPID  (del inglés, \textit{Video Packet ID}) existente si la
 entrada \texttt{overwrite} está activada, sino, si ya existe un paquete VPID en
 el espacio HANC, no se sobrescribirá y no se insertará un nuevo paquete.
 
@@ -530,7 +528,7 @@ generan externamente y entran al módulo a través de los puertos \texttt{byte1}
 \texttt{byte2}, \texttt{byte3} y \texttt{byte4}. El módulo requiere un número
 de línea de interfaz en su entrada. Este número de línea debe ser válido para
 la nueva línea un ciclo de reloj antes del inicio del espacio HANC, es decir,
-durante la segunda palabra CRC  (del inglés, Cyclic Redundancy Check) después del EAV  (del inglés, End of Active Video)\@.
+durante la segunda palabra CRC después del EAV\@.
 
 Este módulo también puedo eliminará cualquier paquete VPID que ocurra en
 cualquier otro lugar en cualquier espacio HANC\@ usando la señal
@@ -546,11 +544,22 @@ cualquier otro lugar en cualquier espacio HANC\@ usando la señal
 
 \subsection{Entorno Cocotb}
 
-  Cocotb (por sus siglas en inglés \textit{COroutine based COsimulation
+  Cocotb (del inglés, \textit{COroutine based COsimulation
   TestBench}) es un entorno de \textit{TestBench} de verificación de simulación
   basado en corrutinas para verificar RTL (en inglés,
   \textit{Register Transfer Level}) descriptos en VHDL y SystemVerilog utilizando
   Python.
+
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{./Figures/cocotb_overview.png}
+    \caption{Visión general de la conexión entre bloques y lenguajes que permite de Cocotb~\citep{cocotb}.}
+  \end{figure}
+  
+  Cocotb fue desarrollado para hacer las pruebas más eficientes. Impulsa
+  estímulos en las entradas del DUT y monitorea las salidas directamente
+  desde Python, en el Apéndice~\ref{AppendixA} se puede ver un ejemplo del
+  código generado para uno de los módulos desarrollados.
 
   Este \textit{Framework} es completamente gratuito, de código abierto (Licencia
   BSD) y alojado en GitHub. Cocotb requiere un simulador para simular el

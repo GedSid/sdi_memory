@@ -11,7 +11,7 @@ y herramientas planteados.
   técnicos. Un escenario particularmente desafiante se presenta cuando se
   identifica la oportunidad de reemplazar componentes de terceros, que suelen
   incurrir en costos de licencia significativos, por soluciones propias que no
-  solo reduzcan costes sino que también ofrezcan la posibilidad de adaptación y
+  solo reduzcan costos sino que también ofrezcan la posibilidad de adaptación y
   mejora continua según las necesidades específicas del proyecto. Este fue
   precisamente el escenario en el que se enmarcó el desarrollo del módulo
   mientras trabajaba en la empresa VideoSwitch.
@@ -24,18 +24,18 @@ y herramientas planteados.
   de desarrollo y a la posibilidad de usar dispositivos de otras marcas, en un
   mercado con grandes problemas de abastecimiento. En este sentido, el desarrollo
   de un módulo propio se presentó no solo como una oportunidad de ahorro económico
-  sino también como un desafío técnico que permitiría a nuestro equipo de
+  sino también como un desafío técnico que permitiría al equipo de
   desarrollo profundizar en el conocimiento y manejo de las interfaces de alta
   velocidad, además de ejercer un control total sobre las características y
   rendimiento del módulo.
 
-  Para abordar este proyecto, fue necesario realizar un análisis exhaustivo de
+  Para abordar este trabajo, fue necesario realizar un análisis exhaustivo de
   los requisitos técnicos y las expectativas de rendimiento que debería cumplir
   el módulo SDI\@. Este análisis implicó un trabajo colaborativo entre los
   equipos de \textit{software} y \textit{hardware} de la empresa.
 
   El proceso de definición de requerimientos se enfocó en capturar las
-  necesidades reales de nuestros proyectos actuales y futuros, considerando tanto
+  necesidades reales de los proyectos actuales y futuros, considerando tanto
   las limitaciones técnicas inherentes al \textit{hardware} disponible como las
   oportunidades de innovación. Este enfoque permitió establecer una hoja de ruta
   clara para el desarrollo del módulo, priorizando aquellos aspectos críticos
@@ -150,7 +150,7 @@ y herramientas planteados.
 
   Para todas las interfaces digitales serie (excluyendo las codificaciones compuestas
   obsoletas), la codificación de color nativa es el formato YCbCr 4:2:2. El canal de
-  luminancia (Y) se codifica con un ancho de banda completo (13.5 MHz en SD de 270 Mbit/s,
+  luminancia (Y) se codifica con un ancho de banda completo (13,5 MHz en SD de 270 Mbit/s,
   ~75 MHz en HD), y los dos canales de crominancia (Cb y Cr) se submuestrean horizontalmente
   y se codifican con la mitad de ancho de banda (6.75 MHz o 37.5 MHz). Las muestras Y, Cr y
   Cb están co-situadas (adquiridas en el mismo instante de tiempo), y la muestra Y' se
@@ -170,7 +170,7 @@ y herramientas planteados.
   tienen dos propósitos; se utilizan tanto para paquetes de sincronización como para cabeceras
   de datos auxiliares.
 
-  \subsection{Paquetes de Sincronización}
+  \subsection{Paquetes de sincronización}
 
   Un paquete de sincronización (comúnmente conocido como la señal de referencia de tiempo o TRS)
   ocurre inmediatamente antes de la primera muestra activa en cada línea, e inmediatamente después
@@ -234,13 +234,11 @@ y herramientas planteados.
   deserializarla y procesarla en un sentido y empaquetarla (acorde al
   protocolo) y serializarla en el otro sentido.
 
-  \vspace{1cm}
   \begin{figure}[htbp]
       \centering
       \includegraphics[width=\linewidth]{./Figures/sdi.png}
       \caption{Diagrama en bloques general de interfaz digital serie.}\label{fig:sdi1}
   \end{figure}
-  \vspace{1cm}
 
 \section{Estándares soportados por la interfaz}
 
@@ -309,13 +307,11 @@ y herramientas planteados.
   capaces de simular datos de cierto modelo, se garantiza que uno entiende el
   modelo, sus restricciones y limitaciones~\citep{testbench}.
 
-  \vspace{1cm}
   \begin{figure}[htbp]
       \centering
       \includegraphics[width=\linewidth]{./Figures/verif.png}
       \caption{Diagrama pasos a seguir para diseñar, implementar y verificar un proyecto.}\label{fig:verif}
   \end{figure}
-  \vspace{1cm}
 
   % En este trabajo se llevaron a cabo test unitarios para cada módulo básico del
   % desarrollo e incluso aquellos que integraban varios submódulos, usando GHDL,
@@ -323,23 +319,23 @@ y herramientas planteados.
   % completo fue necesario usar Quartus y ModelSim, ya que no se contaba con los
   % modelos de los Transceivers debido a que son herramientas propietarias.
 
-  Las pruebas unitarias son a nivel de código y ayuda a eliminar
+  Las pruebas unitarias son a nivel de código y ayudan a eliminar
   problemas en una etapa temprana, principalmente el desarrollador es responsable
   de realizarla para su código.
 
-  Las pruebas funcionales están asociados con la fase de diseño de bajo nivel
-  que garantiza que las módulos de códigos y unidades estén trabajando correctamente
+  Las pruebas funcionales están asociadas con la fase de diseño de bajo nivel
+  que garantiza que los módulos de códigos y unidades estén trabajando correctamente
   para ejecutar nuevas funciones o servicios.
 
   Las pruebas de integración están asociadas con la fase de diseño de alto
-  nivel. Las pruebas de integración garantizan la integración entre todos
-  los módulos del sistema después de agregar nuevas funciones o actualizaciones.
+  nivel. Estas garantizan la integración entre todos los módulos del sistema después
+  de agregar nuevas funciones o actualizaciones.
 
   Las pruebas de sistema están asociados con los requisitos y la fase de
-  diseño del sistema. Combina el software, el hardware y la integración de este
-  sistema con otros sistemas externos.
+  diseño del sistema. Combinan el \textit{software}, el \textit{hardware} y la
+  integración de este sistema con otros sistemas externos.
 
-  Las pruebas de aceptación del usuario están asociados con la fase de
+  Las pruebas de aceptación del usuario están asociadas con la fase de
   análisis empresarial y operativo. Los usuarios clientes son los principales
   ejecutores de esta prueba basada en casos de prueba y escenarios que cubren los
   requisitos comerciales para garantizar que se haya entregado el producto correcto
@@ -386,4 +382,4 @@ Los beneficios comúnmente citados de la integración continua incluyen:
 
 Para este trabajo se optó por usar Git como sistema de control de
 versiones, más específicamente GitHub, que con GitHub Actions también entrega
-la funcionalidad de integración continua.
+la funcionalidad de integración continua~\citep{cicd}.
