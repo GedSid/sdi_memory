@@ -113,7 +113,98 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
       \item Control del \textit{transceiver}.
   \end{itemize}
 
+\subsection{\textit{Transceivers} de Altera}
+
+  El uso de los \textit{transceivers} de Altera, como cualquier otro fabricante,
+  se da por medio de IPs que ofrecen un código encriptado y privativo y un
+  archivo \textit{wrapper} que permite entender y configurar las interfaces.
+
+  El \textit{transceivers} deserializa la entrada serie de alta velocidad. Para
+  HD-SDI, la función CDR realiza la deserialización y bloquea el PLL del receptor
+  a la frecuencia de los datos recibidos. Para SD-SDI, el \textit{transceivers}
+  proporciona un sobremuestreo de frecuencia fija de los datos serie con el PLL
+  del receptor constantemente bloqueado a un reloj de referencia, lo que permite
+  al \textit{transceivers} soportar la tasa de datos de hasta 270 Mbps.
+  El \textit{transceivers} puede procesar datos SD-SDI o HD-SDI\@. La tasa de datos
+  puede detectarse automáticamente para que la interfaz pueda manejar ambas tasas
+  de datos sin necesidad de reconfiguración del dispositivo.
+
+  El transmisor requiere dos relojes: un reloj de datos de video paralelo (\texttt{tx\_pclk})
+  y un reloj de referencia del transmisor (\texttt{tx\_serial\_refclk}). El reloj
+  de video paralelo muestrea y procesa la siguiente entrada de video paralelo:
+  \begin{itemize}
+      \item SD-SDI\@: 27 MHz
+      \item HD-SDI\@: 74.25 o 74.175 MHz
+      \item 3G-SDI\@: 148.5 o 148.35 MHz
+  \end{itemize}
+
+  El \textit{transceivers} utiliza el reloj de referencia del transmisor para
+  generar la salida serie de alta velocidad. Además, está configurado para
+  trabajar con 20 bits, por lo que el reloj de referencia es un veinteavo de la
+  tasa de datos serie. Para SD-SDI, debido a la implementación de sobremuestreo,
+  la tasa de datos serie es cinco veces la tasa de bits SDI\@.
+  Para operación SD-SDI, el reloj de referencia del transmisor se puede derivar
+  de \texttt{pclk} usando uno de los PLLs del \textit{transceivers}. El PLL puede
+  multiplicar la señal \texttt{pclk} de 27 MHz por 5/2.
+
+
+  \begin{table}[h]
+    \caption{Frecuencias de reloj estándar de video}
+    \centering
+    \begin{tabular}{|c|c|}
+      \toprule
+      \textbf{Estándar de Video}  & \textbf{Frecuencia de Reloj (MHz)} \\
+      \midrule
+      SD-SDI                      & 67.5 \\
+      HD-SDI                      & 74.175 o 74.25 \\
+      HD-SDI (sobremuestreo)      & 148.35 o 148.5 \\
+      3G-SDI                      & 148.35 o 148.5 \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+
+  El \textit{transceivers} requiere un reloj de referencia para el receptor,
+  \texttt{rx\_serial\_refclk}, este reloj entrena el PLL del receptor.
+  Para operación SD-SDI, el reloj debe ser nominalmente 1/4 de la tasa de datos
+  serie. El reloj no tiene que estar bloqueado en frecuencia a los datos.
+  Para operación HD-SDI, el reloj debe ser nominalmente 1/20 de la tasa de datos
+  serie. El reloj no tiene que estar bloqueado en frecuencia a los datos, porque
+  el diseño solo lo utiliza para el entrenamiento del PLL del receptor.
+
+  La interfaz del transmisor \textit{transceivers} implementa las funciones:
+  \begin{itemize}
+      \item Re-temporización desde el dominio del reloj de video paralelo al
+      dominio del reloj del \textit{transceivers} transmisor.
+      \item Sobremuestreo opcional dos veces para HD-SDI\@.
+      \item Sobremuestreo del transmisor para SD-SDI\@.
+  \end{itemize}
+
+  Para lograr la funcionalidad deseada del receptor SDI, es necesario
+  instanciar el controlador del \textit{transceivers}.
+  Cuando la interfaz recibe SD-SDI, el PLL del receptor del \textit{transceivers}
+  se bloquea al reloj de referencia del receptor.
+  Cuando la interfaz recibe HD-SDI, el PLL del receptor del \textit{transceivers}
+  es primero entrenado bloqueándose al reloj de referencia del receptor. Una vez
+  que el PLL está bloqueado, entonces puede rastrear la tasa de datos del receptor
+  actual. Si pasa un período de tiempo sin una señal SDI válida, el PLL se
+  reentrena con el reloj de referencia y el proceso se repite.
+  Para esto, primero, el controlador del \textit{transceivers} realiza una
+  detección de tasa grosera del flujo de datos entrante. A través de la
+  reconfiguración dinámica del \textit{transceivers}, luego se reprograma a la
+  tasa correcta para el estándar detectado. Después de la reprogramación, el
+  \textit{transceivers} intenta bloquearse al flujo entrante. Si no se ven datos
+  válidos en 0,1 s, el \textit{transceivers} reinicia el receptor y realiza la
+  detección de tasa nuevamente.
+  Al inicio del proceso de detección de tasa, se muestrea el nivel de las tres
+  señales de \textit{enable}. El nivel de estas señales y el conocimiento del
+  estado actual determina si el \textit{transceivers} requiere programación. Este
+  proceso asegura que el \textit{transceivers} se reprograma solo cuando es necesario.
+
+
 \section{Módulos básicos}
+
+En esta sección se presentan los módulos básicos, que son los elementos que
+conectándolos entre sí permiten crear un sistema complejo y configurable.
 
 \subsection{Replicador de bits}
 
@@ -138,7 +229,7 @@ se muestra a continuación:
 \begin{center}
   \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
     \hline
-    \textbf{Bit} b9 & b8 & b7 & b6 & b5 & b4 & b3 & b2 & b1 & b0 \\
+    \textbf{Bit} & b9 & b8 & b7 & b6 & b5 & b4 & b3 & b2 & b1 & b0 \\
     \hline
     \textbf{CRC 0} & crc8 & crc8 & crc7 & crc6 & crc5 & crc4 & crc3 & crc2 & crc1 & crc0 \\
     \hline
@@ -462,13 +553,13 @@ cualquier otro lugar en cualquier espacio HANC\@ usando la señal
   Python.
 
   Este \textit{Framework} es completamente gratuito, de código abierto (Licencia
-  BSD) y alojado en GitHub.Cocotb requiere un simulador para simular el
+  BSD) y alojado en GitHub. Cocotb requiere un simulador para simular el
   diseño HDL (por sus siglas en inglés \textit{Hardware Description Language}) y
   se puede utilizar con una variedad de simuladores en multiples sistemas
   operativos.
 
-  Cocotb fomenta la filosofía de reutilización de diseño y pruebas
-  aleatorias que UVM, sin embargo, está implementado en Python.
+  % Cocotb facilita la reutilización de código y realización de pruebas aleatorias,
+  % que facilita la implementación de herramientas como UVM, sin embargo, está implementado en Python.
 
   Con Cocotb, los HDL tradicionales se utilizan solo para el diseño en
   sí, no para el banco de pruebas. Además, tiene soporte incorporado para

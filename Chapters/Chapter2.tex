@@ -20,7 +20,7 @@ y herramientas planteados.
   necesidad de contar con una solución más flexible y económicamente viable que
   los \textit{IP cores} de la empresa Altera que se estaban utilizando. Estos
   últimos, aunque funcionales, imponían limitaciones tanto en términos de costos
-  como de adaptabilidad a los constantes cambios de versión ne las herramientas
+  como de adaptabilidad a los constantes cambios de versión de las herramientas
   de desarrollo y a la posibilidad de usar dispositivos de otras marcas, en un
   mercado con grandes problemas de abastecimiento. En este sentido, el desarrollo
   de un módulo propio se presentó no solo como una oportunidad de ahorro económico
@@ -57,11 +57,11 @@ y herramientas planteados.
       % \end{enumerate}
       \item Funcionalidad
       \begin{enumerate}
-          \item Obtener las tasas de datos contempladas dentro del rango de los normas SD-SDI y 3G-SDI\@.
+          \item Obtener las tasas de datos contempladas dentro del rango de las normas SD-SDI y 3G-SDI\@.
           \item Obtener un diseño sin problemas de \textit{timing} en las señales entre dominios de reloj
           dentro del módulo.
           \item Obtener un módulo sin problemas de \textit{timing} por \textit{setup} o \textit{hold} en las señales de entrada y salida.
-          \item La implementación del sistema no debe ocupar más del 3000 \textit{Logic Array Blocks} en la FPGA\@.
+          \item La implementación del sistema no debe ocupar más de 3000 \textit{Logic Array Blocks} en la FPGA\@.
       \end{enumerate}
       \item Metodología de trabajo
       \begin{enumerate}
@@ -101,9 +101,12 @@ y herramientas planteados.
 
   El único supuesto que se logró cumplir fue el acceso a las normas pertinentes
   al desarrollo del módulo. Este item, aunque significativo para el entendimiento
-  y la conceptualización del proyecto, resultó insuficiente para contrarrestar las
-  limitaciones impuestas por la no concreción de los otros supuestos necesarios
-  para un desarrollo y ejecución exitosos del módulo SDI\@.
+  y la conceptualización del proyecto, resultó insuficiente para poder cumplir
+  con los objetivos y plazos planteados originalmente.
+  
+  % contrarrestar las
+  % limitaciones impuestas por la no concreción de los otros supuestos necesarios
+  % para un desarrollo y ejecución exitosos del módulo SDI\@.
 
   Esta situación refleja los retos que enfrentan los proyectos de innovación
   tecnológica en el ámbito empresarial, donde las fluctuaciones en las prioridades
@@ -207,7 +210,7 @@ y herramientas planteados.
 \section{Estructura general del sistema y diagrama en bloques}
 
   En cuanto a la implementación en FPGA, la interfaz SDI consta de dos capas
-  independientes, que se pueden visualizar en la figura~\ref{fig:sdi}, la de
+  independientes, que se pueden visualizar en la figura~\ref{fig:sdi1}, la de
   recepción/transmisión y la de protocolo, por tal motivo el módulo deberá
   implementar ambas instancias de manera separada. Para la primera, se suelen
   usar \textit{hard-transceivers}, contenidos en la FPGA o \textit{soft-transceivers}
@@ -228,8 +231,8 @@ y herramientas planteados.
   configurable para funcionar como transmisor y receptor de manera separada, como
   se ilustra en la figura~\ref{fig:sdi1}. Por lo tanto, el módulo debe ser capaz
   de tomar la señal serie que llega a la FPGA desde el \textit{driver} del cable,
-  deserializarla y procesarla en un sentido y empaquetarla la señal acorde al
-  protocolo y serializarla en el otro sentido.
+  deserializarla y procesarla en un sentido y empaquetarla (acorde al
+  protocolo) y serializarla en el otro sentido.
 
   \vspace{1cm}
   \begin{figure}[htbp]
@@ -259,7 +262,7 @@ y herramientas planteados.
   \subsection{Alta definición}
 
   Aunque el estándar se llama interfaz de 1,5 Gb/s, las tasas de bits admitidas
-  por HD-SDI es en realidad de 1,485 Gb/s y 1,485/1,001 Gb/s. El módulo es
+  por HD-SDI son en realidad de 1,485 Gb/s y 1,485/1,001 Gb/s. El módulo es
   compatible con ambas tasas de bits y con la generación (transmisor) y
   verificación (receptor) de valores CRC (del inglés, \textit{Cyclic Redundancy Check})
   para cada línea de video, así como la inserción (transmisor) y captura (receptor)
@@ -268,7 +271,7 @@ y herramientas planteados.
   \subsection{Ultra alta definición}
 
   Como con el estándar anterior, llama interfaz de 3 Gb/s, pero las tasas de bits
-  real es de 2,97 Gb/s y 2,97/1,001 Gb/s. El módulo es compatible con ambas tasas
+  real son de 2,97 Gb/s y 2,97/1,001 Gb/s. El módulo es compatible con ambas tasas
   de bits. 3G-SDI admite varios niveles de mapeo diferentes, descritos en el
   estándar SMPTE ST 425\-1. El núcleo es compatible con todos estos niveles. Al
   igual que con el estándar HD-SDI, el núcleo también es compatible con la
@@ -293,64 +296,64 @@ y herramientas planteados.
 
 \section{Simulación y verificación}
 
-La verificación y validación de código y modelos por medio de simulación es
-un aspecto crucial para garantizar calidad y reducir tiempos de desarrollo,
-sobre todo en sistemas críticos. La verificación garantiza con simulaciones y
-permite la corrección del código, antes de hacer pruebas en el mundo real, que
-son más lentas y costosas. La validación se relaciona con la conexión del
-desarrollo con el mundo real y su uso previsto, implica contar con el
-\textit{hardware} y el instrumental de medición. Además, en sistemas de alta
-complejidad la simulación permite probar cada módulo por separado, técnica que
-facilita la integración y permite distinguir con claridad los errores, lo que
-acelera proceso de aprendizaje y comprensión del sistema. Por otro lado al ser
-capaces de simular datos de cierto modelo, se garantiza que uno entiende el
-modelo, sus restricciones y limitaciones~\citep{testbench}.
+  La verificación y validación de código y modelos por medio de simulación es
+  un aspecto crucial para garantizar calidad y reducir tiempos de desarrollo,
+  sobre todo en sistemas críticos. La verificación garantiza con simulaciones y
+  permite la corrección del código, antes de hacer pruebas en el mundo real, que
+  son más lentas y costosas. La validación se relaciona con la conexión del
+  desarrollo con el mundo real y su uso previsto, implica contar con el
+  \textit{hardware} y el instrumental de medición. Además, en sistemas de alta
+  complejidad la simulación permite probar cada módulo por separado, técnica que
+  facilita la integración y permite distinguir con claridad los errores, lo que
+  acelera proceso de aprendizaje y comprensión del sistema. Por otro lado al ser
+  capaces de simular datos de cierto modelo, se garantiza que uno entiende el
+  modelo, sus restricciones y limitaciones~\citep{testbench}.
 
-\vspace{1cm}
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=\linewidth]{./Figures/verif.png}
-    \caption{Diagrama pasos a seguir para diseñar, implementar y verificar un proyecto.}\label{fig:sdi}
-\end{figure}
-\vspace{1cm}
+  \vspace{1cm}
+  \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=\linewidth]{./Figures/verif.png}
+      \caption{Diagrama pasos a seguir para diseñar, implementar y verificar un proyecto.}\label{fig:verif}
+  \end{figure}
+  \vspace{1cm}
 
-% En este trabajo se llevaron a cabo test unitarios para cada módulo básico del
-% desarrollo e incluso aquellos que integraban varios submódulos, usando GHDL,
-% cocotb e integración continua en Github, pero para la verificación del sistema
-% completo fue necesario usar Quartus y ModelSim, ya que no se contaba con los
-% modelos de los Transceivers debido a que son herramientas propietarias.
+  % En este trabajo se llevaron a cabo test unitarios para cada módulo básico del
+  % desarrollo e incluso aquellos que integraban varios submódulos, usando GHDL,
+  % cocotb e integración continua en Github, pero para la verificación del sistema
+  % completo fue necesario usar Quartus y ModelSim, ya que no se contaba con los
+  % modelos de los Transceivers debido a que son herramientas propietarias.
 
-Las pruebas unitarias son a nivel de código y ayuda a eliminar
-problemas en una etapa temprana, principalmente el desarrollador es responsable
-de realizarla para su código.
+  Las pruebas unitarias son a nivel de código y ayuda a eliminar
+  problemas en una etapa temprana, principalmente el desarrollador es responsable
+  de realizarla para su código.
 
-Las pruebas funcionales están asociados con la fase de diseño de bajo nivel
-que garantiza que las módulos de códigos y unidades estén trabajando correctamente
-para ejecutar nuevas funciones o servicios.
+  Las pruebas funcionales están asociados con la fase de diseño de bajo nivel
+  que garantiza que las módulos de códigos y unidades estén trabajando correctamente
+  para ejecutar nuevas funciones o servicios.
 
-Las pruebas de integración está asociada con la fase de diseño de alto
-nivel. Las pruebas de integración garantizan la integración entre todos
-los módulos del sistema después de agregar nuevas funciones o actualizaciones.
+  Las pruebas de integración están asociadas con la fase de diseño de alto
+  nivel. Las pruebas de integración garantizan la integración entre todos
+  los módulos del sistema después de agregar nuevas funciones o actualizaciones.
 
-Las pruebas de sistema están asociados con los requisitos y la fase de
-diseño del sistema. Combina el software, el hardware y la integración de este
-sistema con otros sistemas externos.
+  Las pruebas de sistema están asociados con los requisitos y la fase de
+  diseño del sistema. Combina el software, el hardware y la integración de este
+  sistema con otros sistemas externos.
 
-Las pruebas de aceptación del usuario están asociados con la fase de
-análisis empresarial y operativo. Los usuarios clientes son los principales
-ejecutores de esta prueba basada en casos de prueba y escenarios que cubren los
-requisitos comerciales para garantizar que se haya entregado el producto correcto
-según las especificaciones.
+  Las pruebas de aceptación del usuario están asociados con la fase de
+  análisis empresarial y operativo. Los usuarios clientes son los principales
+  ejecutores de esta prueba basada en casos de prueba y escenarios que cubren los
+  requisitos comerciales para garantizar que se haya entregado el producto correcto
+  según las especificaciones.
 
-Dado que, durante la implementación de este desarrollo, no se disponía del
-equipamiento de la empresa VideoSwitch, se enfocó especialmente en las etapas
-iniciales. Se llevaron a cabo pruebas a nivel del sistema de manera parcial,
-omitiendo las pruebas de aceptación~\citep{testbench}.
+  Dado que, durante la implementación de este desarrollo, no se disponía del
+  equipamiento de la empresa VideoSwitch, se enfocó especialmente en las etapas
+  iniciales. Se llevaron a cabo pruebas a nivel del sistema de manera parcial,
+  omitiendo las pruebas de aceptación~\citep{testbench}.
 
-% Debido a que al momento de la ejecución de este desarrollo no se sigue contando
-% con el equipamiento de la empresa VideoSwitch, se puso especial énfasis en las
-% primeras etapas, ejecutando Las pruebas a nivel sistema solo de forma
-% parcial y dejando de lado Las pruebas de aceptación.
+  % Debido a que al momento de la ejecución de este desarrollo no se sigue contando
+  % con el equipamiento de la empresa VideoSwitch, se puso especial énfasis en las
+  % primeras etapas, ejecutando Las pruebas a nivel sistema solo de forma
+  % parcial y dejando de lado Las pruebas de aceptación.
 
 \section{Integración continua}
 
@@ -362,7 +365,7 @@ detectar errores cuanto antes. Se entiende por integración la compilación o
 síntesis y ejecución de pruebas de un proyecto completo y sus subsistemas. 
 
 Por lo general se necesita un sistema de control de versiones que acompañe y
-ejecute del proceso de CI\@. Los mismos también se complementan con otras
+ejecute el proceso de CI\@. Los mismos también se complementan con otras
 comprobaciones como las pruebas automatizadas de calidad del código, las
 herramientas de revisión de estilo de sintaxis, entre otras.
 
@@ -373,7 +376,7 @@ Los beneficios comúnmente citados de la integración continua incluyen:
   \item Progreso continuo y demostrado para mejorar la retroalimentación.
   \item Mejor colaboración en equipo: todos los miembros del equipo pueden 
   cambiar el código, integrar el sistema y determinar rápidamente los conflictos
-  con otras partes del este.
+  con otras partes de este.
   \item Integración mejorada del sistema, lo que reduce las sorpresas al final
   del ciclo de vida del desarrollo.
   \item Menos cambios paralelos para la fusión y prueba.

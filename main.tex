@@ -26,7 +26,7 @@ headsepline, % Uncomment to get a line under the header
 %	INFORMACIÓN DE LA MEMORIA
 %----------------------------------------------------------------------------------------
 
-\thesistitle{Diseñó de interfaz digital serie para dispositivo lógico programable} % El títulos de la memoria, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \ttitle
+\thesistitle{Diseño de interfaz digital serie para dispositivo lógico programable} % El títulos de la memoria, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \ttitle
 
 % Nombre del posgrado, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \degreename
 \posgrado{Carrera de Especialización en Sistemas Embebidos}
@@ -64,16 +64,16 @@ headsepline, % Uncomment to get a line under the header
 En esta memoria se describe el diseño e implementación de un módulo de interfaz
 digital serie de triple velocidad para dispositivos lógicos programables,
 proporcionando una solución integral para la manipulación y transmisión
-de señales de video digital a través de interfaces de definición standard, de
+de señales de video digital a través de interfaces de definición estándar, de
 alta definición y ultra alta definición.
 
-El trabajo aborda el desafío de diseñar un sistema flexible y eficiente que
-pueda adaptarse dinámicamente a las diferentes tasas de datos y formatos de
-video especificados en los estándares SMPTE\@. El módulo desarrollado es capaz
-de codificar y decodificar señales de video, gestionar la inserción y
+El trabajo implica el diseño y verificación de un sistema flexible y eficiente
+capaz de adaptarse dinámicamente a las diferentes tasas de datos y formatos de
+video especificados en los estándares internacionales. El módulo desarrollado
+es capaz de codificar y decodificar señales de video, gestionar la inserción y
 extracción de metadatos, y asegurar la integridad de la señal a través
 de mecanismos de corrección de errores. Los resultados demuestran la viabilidad
-del diseño para aplicaciones de video, proveyendo una base  para futuras
+del diseño para aplicaciones de video, proveyendo una base para futuras
 investigaciones y desarrollos en el campo de las comunicaciones de video digital.
 
 \end{abstract}
@@ -84,7 +84,8 @@ investigaciones y desarrollos en el campo de las comunicaciones de video digital
 %\addchaptertocentry{\acknowledgementname} % Descomentando esta línea se puede agregar los agradecimientos al índice
 \vspace{1.5cm}
 
-Quisiera agradecer al tutor del trabajo, mis compañeros de la carrera y familiares que permitieron completar este documento.
+Quisiera agradecer al tutor del trabajo, mis compañeros de la carrera
+y familiares que permitieron completar este documento.
 
 \end{acknowledgements}
 
@@ -106,16 +107,17 @@ Quisiera agradecer al tutor del trabajo, mis compañeros de la carrera y familia
 \include{Chapters/Chapter2}
 \include{Chapters/Chapter3}
 \include{Chapters/Chapter4}
-% \include{Chapters/Chapter5}
+\include{Chapters/Chapter5}
 
 %   CONTENIDO DE LA MEMORIA  - APÉNDICES
 
-% \appendix % indicativo para indicarle a LaTeX los siguientes "capítulos" son apéndices
+\appendix % indicativo para indicarle a LaTeX los siguientes "capítulos" son apéndices
 
 % Incluir los apéndices de la memoria como archivos separadas desde la carpeta Appendices
 % Descomentar las líneas a medida que se escriben los apéndices
 
-% \include{Appendices/AppendixA}
+% \include{Chapters/apendice}
+\include{Appendices/AppendixA}
 % \include{Appendices/AppendixB}
 
 %	BIBLIOGRAPHY
@@ -124,4 +126,4 @@ Quisiera agradecer al tutor del trabajo, mis compañeros de la carrera y familia
 \raggedright
 \printbibliography[heading=bibintoc]
 
-\end{document}  
+\end{document}
