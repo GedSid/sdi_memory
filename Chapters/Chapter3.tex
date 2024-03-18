@@ -1,6 +1,6 @@
 \chapter{Diseño e implementación}\label{Chapter3}
 
-El capítulo cuenta con los componentes del sistema diseñados, la descripción
+El capítulo cuenta con los componentes diseñados, la descripción
 detallada de cada módulo desarrollado en el trabajo. Utilizando las definiciones
 y criterios descritos en capítulos anteriores se comprende el diseño final del módulo.
 
@@ -25,7 +25,7 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
 
   El diseño se centró en el bloque de protocolo, ya que se supuso que se contaría con
   una FPGA que provea los otros dos, para la estructura general referirse a la
-  figura~\ref{fig:sdi}.
+  figura~\ref{fig:sdi1}.
 
 \subsection{Transmisor}
 
@@ -33,7 +33,7 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
 
   \begin{itemize}
       \item \textit{Scrambler} transmisor SD/HD-SDI\@.
-      \item Formateador de datos transmisor HD-SDI, que incluye inserción de CRC  (del inglés, Cyclic Redundancy Check) y LN\@.
+      \item Formateador de datos HD-SDI, que incluye inserción de CRC y LN\@.
       \item \textit{Transceiver}, además de control y lógica de interfaz con el transmisor.
       \item Multiplexor de \textit{clock} de transmisor.
   \end{itemize}
@@ -45,9 +45,9 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
 
   % \vspace{1cm}
   \begin{figure}[htbp]
-      \centering
-      \includegraphics[width=\linewidth]{./Figures/tx_xcvr.png}
-      \caption{Diagrama en bloques del transmisor de la interfaz digital serie.}\label{fig:tx_xcvr}
+    \centering
+    \includegraphics[width=\linewidth]{./Figures/tx_xcvr.png}
+    \caption{Diagrama en bloques del transmisor de la interfaz digital serie.}\label{fig:tx_xcvr}
   \end{figure}
   % \vspace{1cm}
 
@@ -61,8 +61,8 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
 
   El transmisor realiza las siguientes funciones:
   \begin{itemize}
-      \item Inserción de LN\@.
-      \item Generación e inserción de CRC  (del inglés, Cyclic Redundancy Check)\@.
+      % \item Inserción de LN\@.
+      \item Generación e inserción de CRC y LN\@.
       \item Generación de señal de habilitación de \textit{clock}.
       \item \textit{Scrambler} y codificación NRZI (del inglés, \textit{No Return to Zero Inverted}).
       \item Cambio interno entre dos señales de \textit{clock} de referencia en el bloque transmisor.
@@ -73,7 +73,7 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
   El receptor contiene los siguientes elementos:
   \begin{itemize}
       \item \textit{Descrambler} y alineador de palabras receptor.
-      \item Extractor de CRC  (del inglés, Cyclic Redundancy Check) y LN receptor.
+      \item Extractor de CRC y LN receptor.
       \item \textit{Transceiver}, además de control y lógica de interfaz con operación de transmisor.
       \item Encuadre del receptor, con extracción de señales de temporización de video.
       \item Identificación y seguimiento de datos auxiliares.
@@ -107,7 +107,7 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
       \item Extracción de indicadores de temporización de video.
       \item Cumplimiento de cambio RP168.
       \item Extracción de LN\@.
-      \item Comprobación de CRC  (del inglés, Cyclic Redundancy Check)\@.
+      \item Comprobación de CRC\@.
       \item Control del \textit{transceiver}.
   \end{itemize}
 
@@ -145,13 +145,12 @@ y criterios descritos en capítulos anteriores se comprende el diseño final del
   de \texttt{pclk} usando uno de los PLLs del \textit{transceivers}. El PLL puede
   multiplicar la señal \texttt{pclk} de 27 MHz por 5/2.
 
-
   \begin{table}[h]
-    \caption{Frecuencias de reloj estándar de video}
+    \caption{Frecuencias de reloj estándar de video.}
     \centering
-    \begin{tabular}{|c|c|}
+    \begin{tabular}{lc}
       \toprule
-      \textbf{Estándar de Video}  & \textbf{Frecuencia de Reloj (MHz)} \\
+      \textbf{Estándar de video}  & \textbf{Frecuencia de reloj (MHz)} \\
       \midrule
       SD-SDI                      & 67,5 \\
       HD-SDI                      & 74,175 o 74,25 \\
@@ -222,21 +221,26 @@ después de las palabras de número de línea en el EAV\@.
 
 Un valor CRC de 18 bits se formatea en dos palabras de 10 bits que se insertan
 después de las palabras EAV y número de línea. El formato de las palabras CRC
-se muestra a continuación:
-
-\begin{center}
-  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
-    \hline
-    \textbf{Bit} & b9 & b8 & b7 & b6 & b5 & b4 & b3 & b2 & b1 & b0 \\
-    \hline
-    \textbf{CRC 0} & crc8 & crc8 & crc7 & crc6 & crc5 & crc4 & crc3 & crc2 & crc1 & crc0 \\
-    \hline
-    \textbf{CRC 1} & crc17 & crc16 & crc15 & crc14 & crc13 & crc12 & crc11 & crc10 & crc9 & crc8 \\
-    \hline
-  \end{tabular}
-\end{center}
+se muestra en la table~\ref{tab:crc}.
 
 Este módulo es puramente combinacional y no contiene registros de retardo.
+
+% \begin{center}
+  \begin{table}[h]
+    \centering
+    \caption{Formato del CRC.}\label{tab:crc}
+    \begin{tabular}{lcccccccccc}
+      \toprule
+      \textbf{Bit} & b9 & b8 & b7 & b6 & b5 & b4 & b3 & b2 & b1 & b0 \\
+      \hline
+      \textbf{CRC 0} & crc8 & crc8 & crc7 & crc6 & crc5 & crc4 & crc3 & crc2 & crc1 & crc0 \\
+      \hline
+      \textbf{CRC 1} & crc17 & crc16 & crc15 & crc14 & crc13 & crc12 & crc11 & crc10 & crc9 & crc8 \\
+      \bottomrule
+      % \hline
+    \end{tabular}
+  \end{table}
+% \end{center}
 
 \subsection{Codificador}
 
@@ -253,7 +257,7 @@ Este módulo es puramente combinacional y no contiene registros de retardo.
 
 \subsection{Receptor verificación de redundancia cíclica}
 
-  Este módulo calcula el valor CRC (del inglés, \textit{Cyclic Redundancy Check}) para una línea y lo compara con el valor CRC
+  Este módulo calcula el valor CRC para una línea y lo compara con el valor CRC
   recibido. El módulo realiza esta operación tanto para los canales Y como para C.
   Si se detecta un error CRC, la salida correspondiente de error CRC se activa en
   alto. Esta salida permanece activada durante el tiempo de una línea de video,
@@ -278,7 +282,7 @@ para video. Este módulo realiza el formateo en los datos decodificados.
     
     \item \textbf{Modo de \texttt{frame\_en}:}
     \begin{itemize}
-        \item \texttt{frame\_en} atado alto: resincroniza en cada detección de TRS  (del inglés, Timing Reference signal).
+        \item \texttt{frame\_en} atado alto: resincroniza en cada detección de TRS  (del inglés, \textit{Timing Reference signal}).
         \item \texttt{frame\_en} atado a \texttt{nsp}: implementa filtrado TRS sin resincronización inmediata.
         \item \texttt{frame\_en} atado bajo: desactiva la función de formateo automático.
     \end{itemize}
@@ -295,13 +299,14 @@ dos niveles principales: un detector de `unos' y un detector de `ceros'.
     \begin{itemize}
         \item Busca 20 unos consecutivos en \texttt{hd\_in\_1}.
         \item Busca 20 ceros consecutivos en \texttt{hd\_in\_0}.
-        \item Salidas almacenadas en vectores \texttt{hd\_ones\_in}, \texttt{hd\_zeros\_in}, y \texttt{hd\_zeros\_dly}.
+        \item Salidas almacenadas en vectores \texttt{hd\_ones\_in}, \texttt{hd\_zeros\_in}, \\
+        y \texttt{hd\_zeros\_dly}.
     \end{itemize}
     
     \item \textbf{Generación de resultados:}
     \begin{itemize}
         \item Se crea \texttt{hd\_is\_trs} mediante OR entre los vectores mencionados.
-        \item \texttt{hd\_trs\_detected} se activa cuando se detecta un TRS.
+        \item \texttt{hd\_trs\_detected} se activa cuando se detecta un TRS\@.
         \item \texttt{hd\_bin\_offset} se genera desde \texttt{hd\_is\_trs}.
     \end{itemize}
 \end{itemize}
@@ -316,7 +321,8 @@ la secuencia de datos de entrada.
     \item \textbf{Estructura del detector:}
     \begin{itemize}
         \item Utiliza una serie de compuertas AND y NOR de 10 bits para examinar cada posición posible en el vector de entrada de 39 bits.
-        \item Salidas en vectores \texttt{sd\_trs1\_match}, \texttt{sd\_trs2\_match}, y \texttt{sd\_trs2\_match}.
+        \item Salidas en vectores \texttt{sd\_trs1\_match}, \texttt{sd\_trs2\_match}, y \\
+        \texttt{sd\_trs2\_match}.
     \end{itemize}
     
     \item \textbf{Generación de resultados:}
@@ -330,21 +336,26 @@ la secuencia de datos de entrada.
 
 Este módulo cambia el formato del valor de número de línea de 11 bits en dos
 palabras de 10 bits y las inserta en sus posiciones adecuadas inmediatamente
-después de la palabra EAV (del inglés, \textit{End of Active Video})\@. El mismo valor
+después de la palabra EAV\@. El mismo valor
 de número de línea se inserta en ambos canales de video.
 
 En el estándar SMPTE 292M, los números de línea de 11 bits deben formatearse en
-dos palabras de 10 bits con el siguiente formato para cada palabra:
+dos palabras de 10 bits con el siguiente formato para cada palabra, ver tabla~\ref{tab:11bits}
 
-\begin{center}
-  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-    \hline
+% \begin{center}
+\begin{table}[h]
+  \centering
+  \caption{Formato de los 20 bits para SMPTE 292M.}\label{tab:11bits}
+  \begin{tabular}{lccccccccc}
+    \toprule
     \textbf{Palabra 0} & $\sim$ln6 & ln6 & ln5 & ln4 & ln3 & ln2 & ln1 & ln0 & 0 \\
     \hline
     \textbf{Palabra 1} & 1 & 0 & 0 & 0 & ln10 & ln9 & ln8 & ln7 & 0 \\
+    \bottomrule
     \hline
   \end{tabular}
-\end{center}
+\end{table}
+% \end{center}
 
 Este módulo es puramente combinatorio y no tiene registros de retardo.
 
@@ -502,7 +513,7 @@ MHz. Para HD-SDI, acepta dos flujos de datos de 10 bits, Y y C, cada uno de
 10 bits. Clock Enable debe afirmarse cada dos ciclos de reloj para una tasa de
 transmisión de datos de entrada de 74,25 MHz. Para 3G-SDI nivel A, acepta dos
 flujos de datos de 10 bits. Clock Enable debe afirmarse cada dos ciclos de
-reloj para una tasa de transmisión de datos de entrada de 148.,5 MHz.
+reloj para una tasa de transmisión de datos de entrada de 148,5 MHz.
 
 Para 3G-SDI nivel B, acepta cuatro flujos de datos de 10 bits. Estos pueden ser
 un par de enlaces dobles SMPTE 372M o pueden ser dos señales HD-SDI
@@ -563,7 +574,7 @@ cualquier otro lugar en cualquier espacio HANC\@ usando la señal
 
   Este \textit{Framework} es completamente gratuito, de código abierto (Licencia
   BSD) y alojado en GitHub. Cocotb requiere un simulador para simular el
-  diseño HDL (por sus siglas en inglés \textit{Hardware Description Language}) y
+  diseño HDL (del inglés, \textit{Hardware Description Language}) y
   se puede utilizar con una variedad de simuladores en multiples sistemas
   operativos.
 

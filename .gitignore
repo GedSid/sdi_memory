@@ -10,6 +10,10 @@
 *.fot
 *.cb
 *.cb2
+*.pdf
+*.json
+*.zip
+node_modules/*
 
 ## Intermediate documents:
 *.dvi

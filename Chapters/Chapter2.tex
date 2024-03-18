@@ -100,8 +100,8 @@ y herramientas planteados.
   \end{enumerate}
 
   El único supuesto que se logró cumplir fue el acceso a las normas pertinentes
-  al desarrollo del módulo. Este item, aunque significativo para el entendimiento
-  y la conceptualización del proyecto, resultó insuficiente para poder cumplir
+  al desarrollo del módulo. Este ítem, aunque significativo para el entendimiento
+  y la conceptualización del proyecto, resultó insuficiente para poder llegar
   con los objetivos y plazos planteados originalmente.
   
   % contrarrestar las
@@ -152,7 +152,7 @@ y herramientas planteados.
   obsoletas), la codificación de color nativa es el formato YCbCr 4:2:2. El canal de
   luminancia (Y) se codifica con un ancho de banda completo (13,5 MHz en SD de 270 Mbit/s,
   ~75 MHz en HD), y los dos canales de crominancia (Cb y Cr) se submuestrean horizontalmente
-  y se codifican con la mitad de ancho de banda (6.75 MHz o 37.5 MHz). Las muestras Y, Cr y
+  y se codifican con la mitad de ancho de banda (6,75 MHz o 37,5 MHz). Las muestras Y, Cr y
   Cb están co-situadas (adquiridas en el mismo instante de tiempo), y la muestra Y' se
   adquiere en el momento intermedio entre dos muestras Y adyacentes.
 
@@ -164,8 +164,8 @@ y herramientas planteados.
   a y desde el espacio de color RGB, se discute a continuación.
 
   La carga útil de vídeo (así como la carga útil de datos auxiliares) puede usar cualquier
-  palabra de 10 bits en el rango de 4 a 1,019 (004\textsubscript{16} a 3FB\textsubscript{16})
-  inclusive; los valores 0–3 y 1,020–1,023 (3FC\textsubscript{16}–3FF\textsubscript{16}) están
+  palabra de 10 bits en el rango de 4 a 1019 (004\textsubscript{16} a 3FB\textsubscript{16})
+  inclusive; los valores 0–3 y 1020–1023 (3FC\textsubscript{16}–3FF\textsubscript{16}) están
   reservados y no pueden aparecer en ninguna parte de la carga útil. Estas palabras reservadas
   tienen dos propósitos; se utilizan tanto para paquetes de sincronización como para cabeceras
   de datos auxiliares.
@@ -179,12 +179,12 @@ y herramientas planteados.
   las mismas: 3FF\textsubscript{16}, 0, 0; la cuarta consta de 3 bits de bandera, junto con un código de corrección
   de errores. Como resultado, hay 8 paquetes de sincronización diferentes posibles.
 
-  En las interfaces HD-SDI y de enlace dual, los paquetes de sincronización deben ocurrir
-  simultáneamente en ambos flujos de datos Y y C. (Se permite cierto retraso entre los dos cables
-  en una interfaz de enlace dual; se espera que el equipo que soporta enlace dual almacene en
-  búfer el enlace líder para permitir que el otro enlace se ponga al día). En interfaces SD-SDI y
-  de definición mejorada, solo hay un flujo de datos, y por lo tanto, solo un paquete de
-  sincronización a la vez. Aparte del tema de cuántos paquetes aparecen, su formato es el mismo en
+  En las interfaces HD-SDI y de enlace dual, los paquetes de sincronización deben
+  ocurrir simultáneamente en ambos flujos de datos Y y C (se permite cierto retraso
+  entre ambos, con tal fin el equipo debe ser capaz de almacenar en búfer adelantado
+  para que se sincronicen). En interfaces SD-SDI y de definición mejorada, solo
+  hay un flujo de datos, y por lo tanto, solo un paquete de sincronización a la
+  vez. Aparte del tema de cuántos paquetes aparecen, su formato es el mismo en
   todas las versiones de la interfaz digital-serial.
 
   Los bits de bandera encontrados en la cuarta palabra (comúnmente conocida como la palabra XYZ)
@@ -192,7 +192,7 @@ y herramientas planteados.
   sincronización que preceden inmediatamente a la región de borrado horizontal deben tener H
   establecido en uno. Tales paquetes se conocen comúnmente como paquetes de Fin de Vídeo Activo, o
   paquetes EAV\@. De manera similar, el paquete que aparece inmediatamente antes del inicio del vídeo
-  activo tiene H establecido en 0; este es el paquete de Inicio de Vídeo Activo o paquete SAV\@.
+  activo tiene H establecido en 0; este es el paquete de inicio de vídeo activo o paquete SAV\@.
 
   De manera similar, el bit V se utiliza para indicar el inicio de la región de borrado vertical; un
   paquete EAV con V=1 indica que la siguiente línea (las líneas se consideran que comienzan con el
@@ -204,8 +204,8 @@ y herramientas planteados.
   El bit F se utiliza para distinguir entre campos en formatos entrelazados o segmentados
   progresivamente. En formatos progresivos, F siempre es 0. En formatos entrelazados o segmentados
   progresivamente, F es 0 para todas las líneas en el primer campo o segmento, y 1 para todas las
-  líneas en el segundo campo o segmento. (La designación de cuál de los dos campos o segmentos se
-  considera el primero es arbitraria).
+  líneas en el segundo campo o segmento. La designación de cuál de los dos campos o segmentos se
+  considera el primero es arbitraria.
 
 \section{Estructura general del sistema y diagrama en bloques}
 

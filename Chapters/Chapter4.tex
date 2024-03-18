@@ -1,3 +1,36 @@
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  % basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  % breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  % breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  % commentstyle=\color{mygreen},    % comment style
+  % deletekeywords={...},            % if you want to delete keywords from the given language
+  % %escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  % %extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  % %frame=single,	                % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  % language=[ANSI]C,                % the language of the code
+  % %otherkeywords={*,...},           % if you want to add more keywords to the set
+  % numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  % rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  % showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  % showstringspaces=false,          % underline spaces within strings only
+  % showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  % stringstyle=\color{mymauve},     % string literal style
+  % tabsize=2,	                   % sets default tabsize to 2 spaces
+  title=\lstname,                  % show the filename of files included with \lstinputlisting; also try caption instead of title
+  % morecomment=[s]{/*}{*/}
+}
+
 \chapter{Ensayos y Resultados}\label{Chapter4}
 
 El capítulo muestra las pruebas de verificación realizadas en el trabajo,
@@ -60,53 +93,66 @@ durante el desarrollo.
 
 \section{Recursos utilizados}
 
-  La siguiente tabla lista el uso de recursos que utilizó el módulo SDI según el modo
-  configurado en modo diferencial, generando el \textit{bitfile} con Altera Quartus II 15.0.
+  La tabla~\ref{tab:propio} lista el uso de recursos que utilizó el módulo SDI según el modo
+  configurado en modo diferencial (con receptor y transmisor) no es un caso real
+  de uso, pero sirve para comparar con la hoja de datos de Altera, que fue la
+  referencia para este diseñó. El \textit{bitfile} fue generando con Altera
+  Quartus II 15.0 por la misma razón.
 
-  \begin{center}
-    \begin{tabular}{|c|c|c|}
-      \hline
-      Modo & ALUTs Combinacionales & Registros lógicos \\
-      \hline
-      SD-SDI & 1,410 & 976 \\
-      \hline
-      HD-SDI y 3G HD-SDI & 1,673 & 1063 \\
-      \hline
-      Triple standard & 2,421 & 1,805 \\
-      \hline
-    \end{tabular}
-  \end{center}
+  % \begin{center}
+    \begin{table}[h]
+      \centering
+      \caption{Recursos utilizados por el módulo diseñado.}\label{tab:propio}
+      \begin{tabular}{lcc}
+        \toprule
+        Modo & ALUTs combinacionales & Registros lógicos \\
+        \hline
+        SD-SDI & 1725 & 1164 \\
+        \hline
+        HD-SDI y 3G HD-SDI & 2237 & 1419 \\
+        \hline
+        Triple standard & 2753 & 2301 \\
+        \bottomrule
+        \hline
+      \end{tabular}
+    \end{table}
+    % \end{center}
 
-  Se identificó un problema en la compilación que provoca que los módulos HD y 3G ocupen
-  la misma cantidad de recursos, se cree que esto se debe a que cuando se instancia el
+  Se identificó un problema en la compilación que causa que los módulos HD y 3G utilicen
+  la misma cantidad de recursos, se sospecha que esto se debe a que cuando se instancia el
   módulo en formato HD se está instanciando el 3G con el \textit{transceiver}
-  configurado a menor velocidad. Además, de esta tabla sale que se cumple con el
+  configurado a menor velocidad. Además, según la tabla~\ref{tab:propio} sale que se cumple con el
   requerimiento de ocupar menos de 3000 \textit{Logic Array Blocks} en la FPGA\@.
 
-  Se hizo esta tabla para comparar con la que da la hoja de datos del
-  dispositivo que se busca remplazar:
+  Se hizo la tabla~\ref{tab:propio} para comparar con la que da la hoja de datos del
+  dispositivo que se busca remplazar, tabla~\ref{tab:altera}.
 
-  \begin{center}
-    \begin{tabular}{|c|c|c|}
-      \hline
-      Modo & ALUTs Combinacionales & Registros lógicos \\
-      \hline
-      SD-SDI & 1,410 & 976 \\
-      \hline
-      HD-SDI & 1,673 & 1063 \\
-      \hline
-      3G HD-SDI & 1,673 & 1063 \\
-      \hline
-      Dual-Link HD-SDI & 2,351 & 1,696 \\
-      \hline
-      Dual standard receiver & 1,539 & 1,042 \\
-      \hline
-      Dual standard transmitter & 352 & 260 \\
-      \hline
-      Triple standard & 2,421 & 1,805 \\
-      \hline
-    \end{tabular}
-  \end{center}
+  % \begin{center}
+    \begin{table}[h]
+      \centering
+      \caption{Recursos utilizados por el módulo de Altera.}\label{tab:altera}
+      \begin{tabular}{lcc}
+        \toprule
+        Modo & ALUTs combinacionales & Registros lógicos \\
+        \hline
+        SD-SDI & 1410 & 976 \\
+        \hline
+        HD-SDI & 1673 & 1063 \\
+        \hline
+        3G HD-SDI & 1673 & 1063 \\
+        \hline
+        Dual-Link HD-SDI & 2351 & 1696 \\
+        \hline
+        Dual standard receiver & 1539 & 1042 \\
+        \hline
+        Dual standard transmitter & 352 & 260 \\
+        \hline
+        Triple standard & 2421 & 1805 \\
+        \bottomrule
+        \hline
+      \end{tabular}
+    \end{table}
+  % \end{center}
 
   Se puede observar comparando ambas tablas, que el módulo original tiene varios
   modos más que el desarrollado en este trabajo, pero estos modos no habían sido
@@ -145,7 +191,8 @@ durante el desarrollo.
 
   Se corrieron las pruebas unitarias del replicador de bits:
 
-  {\scriptsize\begin{verbatim}
+  % {\tiny\begin{verbatim}
+  {\tiny\begin{lstlisting}[caption= "Resultados \textit{test} replicador de bits.]
     Seeding Python random module with 1709476252
     Found test test_sdi_bit_rep.test_sdi_bit_rep
     running test_sdi_bit_rep (1/1)
@@ -157,14 +204,15 @@ durante el desarrollo.
     *******************************************************************************************
     ** TESTS=1 PASS=1 FAIL=0 SKIP=0                     300.00           0.03       9765.47  **
     *******************************************************************************************
-  \end{verbatim}}
+  \end{lstlisting}}
+  % \end{verbatim}}
 
   La simulación del módulo bit\_rep se realizó con éxito, confirmando el correcto
   funcionamiento del diseño. Durante la simulación, se observó que el módulo
   replicaba los bits de los datos de entrada 11 veces, ver figura~\ref{fig:bit-rep},
   generando una salida de 20 bits en cada ciclo de reloj.
 
-  \begin{figure}[h]
+  \begin{figure}[htbp]
     \centering
     \includegraphics[width=1\textwidth]{./Figures/bit_rep.png}
     \caption{Simulación del módulo bit\_rep.}\label{fig:bit-rep}
@@ -178,11 +226,7 @@ durante el desarrollo.
 
 \subsection{Verificación de redundancia cíclica}
 
-  Se corrieron las respectivas pruebas unitarias, tanto para el módulo capaz de
-  calcular el CRC, como para los \textit{wrappers} que adaptan las señales del
-  flujo transmisión y recepción de datos:
-
-  {\scriptsize\begin{verbatim}
+  {\tiny\begin{lstlisting}[caption= "Resultados \textit{test} inserción de redundancia cíclica.]
     Seeding Python random module with 1709474689
     Found test test_crc_insert.crc_insert_test
     running crc_insert_test (1/1)
@@ -194,9 +238,13 @@ durante el desarrollo.
     *****************************************************************************************
     ** TESTS=1 PASS=1 FAIL=0 SKIP=0                   430.36           0.03      14103.80  **
     *****************************************************************************************
-  \end{verbatim}}
+  \end{lstlisting}}
 
-  {\scriptsize\begin{verbatim}
+  Se corrieron las respectivas pruebas unitarias, tanto para el módulo capaz de
+  calcular el CRC, como para los \textit{wrappers} que adaptan las señales del
+  flujo transmisión y recepción de datos:
+
+  {\tiny\begin{lstlisting}[caption= "Resultados \textit{test} recepción de redundancia cíclica.]
     Seeding Python random module with 1709474535
     Found test test_crc_rx.crc_rx_test
     running crc_rx_test (1/1)
@@ -208,9 +256,9 @@ durante el desarrollo.
     **************************************************************************************
     ** TESTS=1 PASS=1 FAIL=0 SKIP=0                489.01           0.03      17432.87  **
     **************************************************************************************
-  \end{verbatim}}
+  \end{lstlisting}}
 
-  {\scriptsize\begin{verbatim}
+  {\tiny\begin{lstlisting}[caption= "Resultados \textit{test} cálculo de redundancia cíclica.]
     Seeding Python random module with 1709473164
     Found test test_crc18.crc18_test
     running crc18_test (1/1)
@@ -222,25 +270,27 @@ durante el desarrollo.
     **************************************************************************************
     ** TESTS=1 PASS=1 FAIL=0 SKIP=0                390.63           0.03      11570.77  **
     **************************************************************************************
-  \end{verbatim}}
+  \end{lstlisting}}
 
-  \begin{figure}[h]
+  La simulación del módulo de verificación de redundancia cíclica se llevó a cabo
+  con éxito, confirmando su correcto funcionamiento en la verificación del CRC,
+  ver figuras~\ref{fig:crc18} y~\ref{fig:crc18-z}\@.
+
+  \begin{figure}[htbp]
     \centering
     \includegraphics[width=1\textwidth]{./Figures/crc18.png}
     \caption{Simulación del módulo crc18.}\label{fig:crc18}
   \end{figure}
 
-  La simulación del módulo de verificación de redundancia cíclica se llevó a cabo
-  con éxito, confirmando su correcto funcionamiento en la verificación del CRC,
-  ver figuras~\ref{fig:crc18} y~\ref{fig:crc18-z}\@.
   Durante la simulación, se observó que el módulo calculaba correctamente el
   valor CRC para cada línea de video, tanto para los canales Y como para C.
+  
   Además, se verificó que el valor CRC calculado se comparaba con el valor CRC
   recibido, activando la salida de error CRC correspondiente en caso de detectarse
   un error. Esta salida permaneció activada durante el tiempo de una línea de
   video, como se esperaba, hasta que se realizó la próxima verificación de CRC\@.
 
-  \begin{figure}[h]
+  \begin{figure}[htbp]
     \centering
     \includegraphics[width=1\textwidth]{./Figures/crc18_zoom.png}
     \caption{Simulación del módulo crc18 enfocada en los datos.}\label{fig:crc18-z}
@@ -255,7 +305,7 @@ durante el desarrollo.
 
   Se corrieron las pruebas unitarias del codificador y sus sus submódulos:
 
-  {\scriptsize\begin{verbatim}
+  {\tiny\begin{lstlisting}[caption= "Resultados \textit{test} de conversor NRZ a NRZI.]
     Seeding Python random module with 1709472961
     Found test test_nrz_2_nrzi.nrzi_basic_test
     running nrzi_basic_test (1/1)
@@ -270,7 +320,7 @@ durante el desarrollo.
     *****************************************************************************************
     ** TESTS=2 PASS=2 FAIL=0 SKIP=0                   575.46           0.02      16257.78  **
     *****************************************************************************************
-  \end{verbatim}}
+  \end{lstlisting}}
 
   Durante la simulación, se observó que el módulo funcionaba correctamente.
   Convirtiendo los datos de entrada de la codificación NRZ a NRZI de manera
@@ -291,7 +341,7 @@ durante el desarrollo.
   convertidor NRZ a NRZI se corresponden con los establecidos en el modelo de
   referencia.
 
-  {\scriptsize\begin{verbatim}
+  {\tiny\begin{lstlisting}[caption= "Resultados \textit{test} de \textit{scrambler}.]
     Seeding Python random module with 1836729247
     Found test test_scram_smpte.test_scram_smpte
     running test_scram_smpte (1/1)
@@ -303,12 +353,12 @@ durante el desarrollo.
     *****************************************************************************************
     ** TESTS=1 PASS=1 FAIL=0 SKIP=0                   412.87           0.03       14427.10 **
     *****************************************************************************************
-  \end{verbatim}}
+  \end{lstlisting}}
 
   Durante la simulación, se observó que el módulo funcionaba correctamente.
   Genera secuencias de bits scrambled según el estándar SMPTE\@.
 
-  {\scriptsize\begin{verbatim}
+  {\tiny\begin{lstlisting}[caption= "Resultados \textit{test} de \textit{encoder}.]
     Seeding Python random module with 287641029
     Found test test_sdi_enc.test_sdi_enc
     running test_sdi_enc (1/1)
@@ -320,7 +370,7 @@ durante el desarrollo.
     *****************************************************************************************
     ** TESTS=1 PASS=1 FAIL=0 SKIP=0                   589.23           0.04       14730.75 **
     *****************************************************************************************
-  \end{verbatim}}
+  \end{lstlisting}}
 
   La simulación del decoder y encoder no fue trivial, debido a que el modelo
   no fue fácil de reproducir, de todas formas una vez que se encontró una
@@ -328,7 +378,7 @@ durante el desarrollo.
   Procesa los datos de entrada según los estándares SDI y generaba datos
   de salida de manera adecuada.
 
-  {\scriptsize\begin{verbatim}
+  {\tiny\begin{lstlisting}[caption= "Resultados \textit{test} de \textit{decoder}.]
     Seeding Python random module with 1654987444
     Found test test_sdi_deco.test_sdi_deco
     running test_sdi_deco (1/1)
@@ -340,11 +390,15 @@ durante el desarrollo.
     *****************************************************************************************
     ** TESTS=1 PASS=1 FAIL=0 SKIP=0                   212.58           0.02        8576.24 **
     *****************************************************************************************
-  \end{verbatim}}
+  \end{lstlisting}}
 
 \subsection{Estándar SMPTE 292M \textit{framer}}
 
-  {\scriptsize\begin{verbatim}
+  Se observó que el módulo cumple con la norma durante la simulación.
+  No se observaron oscilaciones, estados intermedios inestables o glitches en las
+  señales de salida.
+
+  {\tiny\begin{lstlisting}[caption= "Resultados \textit{test} de \textit{framer}.]
     Seeding Python random module with 2598374610
     Found test test_framer.test_framer
     running test_framer (1/1)
@@ -356,37 +410,51 @@ durante el desarrollo.
     *******************************************************************************************
     ** TESTS=1 PASS=1 FAIL=0 SKIP=0                     325.00           0.04       9587.13  **
     *******************************************************************************************
-  \end{verbatim}}
+  \end{lstlisting}}
 
-  En la siguientes tablas se puede apreciar uno de los casos simulados exitosamente,
-  en la primera, los datos \textit{unscrambled} de entrada y en la segunda, los
-  datos de salida:
+  En la siguientes tablas se puede apreciar uno de los casos simulados exitosamente.
+  En la tabla~\ref{tab:in}, los datos \textit{unscrambled} de entrada y en la tabla~\ref{tab:out}, los
+  datos de salida.
 
-    \begin{center}[H]
-    \begin{tabular}{|c|c|c|c|c|c|}
-    \hline
-    Bits 18\-19 & 14\-17 & 10\-13 & 8\-9 & 4\-7 & 0\-3 \\ \hline
-    11 & 1111 & 1111 & 11 & 11xx & xxxx \\ \hline
-    00 & 0000 & 0000 & 00 & 0011 & 1111 \\ \hline
-    00 & 0000 & 0000 & 00 & 0000 & 0000 \\ \hline
-    aa & aaaa & aaaa & aa & aa00 & 0000 \\ \hline
-    bb & bbbb & bbbb & bb & bbbb & bbbb \\ \hline
-    cc & cccc & cccc & cc & cccc & cccc \\ \hline
-    \end{tabular}
-    \end{center}
-    
-    \begin{center}[H]
-    \begin{tabular}{|c|c|c|c|c|c|}
-    \hline
-    Bits 18\-19 & 14\-17 & 10\-13 & 8\-9 & 4\-7 & 0\-3 \\ \hline
-    xx & xxxx & xxxx & xx & xxxx & xxxx \\ \hline
-    11 & 1111 & 1111 & 11 & 1111 & 1111 \\ \hline
-    00 & 0000 & 0000 & 00 & 0000 & 0000 \\ \hline
-    00 & 0000 & 0000 & 00 & 0000 & 0000 \\ \hline
-    bb & bbbb & aaaa & aa & aaaa & aaaa \\ \hline
-    cc & cccc & bbbb & bb & bbbb & bbbb \\ \hline
-    \end{tabular}
-    \end{center}
+  % \begin{center}
+    \begin{table}[h]
+      \centering
+      \caption{Datos de entrada.}
+      \begin{tabular}{lccccc}
+        \toprule
+        Bits 18\-19 & 14\-17 & 10\-13 & 8\-9 & 4\-7 & 0\-3 \\ \hline
+        11 & 1111 & 1111 & 11 & 11xx & xxxx \\ \hline
+        00 & 0000 & 0000 & 00 & 0011 & 1111 \\ \hline
+        00 & 0000 & 0000 & 00 & 0000 & 0000 \\ \hline
+        aa & aaaa & aaaa & aa & aa00 & 0000 \\ \hline
+        bb & bbbb & bbbb & bb & bbbb & bbbb \\ \hline
+        cc & cccc & cccc & cc & cccc & cccc \\ \hline
+        \bottomrule
+        \hline
+      \end{tabular}
+      \label{tab:in}
+    \end{table}
+  % \end{center}
+
+  % \begin{center}
+    \begin{table}[h]
+      \centering
+      \caption{Datos de salida.}
+      \begin{tabular}{lccccc}
+        \toprule
+        Bits 18\-19 & 14\-17 & 10\-13 & 8\-9 & 4\-7 & 0\-3 \\ \hline
+        xx & xxxx & xxxx & xx & xxxx & xxxx \\ \hline
+        11 & 1111 & 1111 & 11 & 1111 & 1111 \\ \hline
+        00 & 0000 & 0000 & 00 & 0000 & 0000 \\ \hline
+        00 & 0000 & 0000 & 00 & 0000 & 0000 \\ \hline
+        bb & bbbb & aaaa & aa & aaaa & aaaa \\ \hline
+        cc & cccc & bbbb & bb & bbbb & bbbb \\
+        \bottomrule
+        \hline
+      \end{tabular}
+      \label{tab:out}
+    \end{table}
+  % \end{center}
 
 \subsection{Números de línea}
 
@@ -398,7 +466,7 @@ durante el desarrollo.
   inmediatamente después de la palabra EAV\@. El módulo resuelve la desactivación
   la inserción de números de línea correctamente.
 
-  {\scriptsize\begin{verbatim}
+  {\tiny\begin{lstlisting}[caption= "Resultados \textit{test} de insertor de número de línea.]
     Seeding Python random module with 1709476252
     Found test ln_insert.test_ln_insert
     running test_ln_insert (1/1)
@@ -410,13 +478,13 @@ durante el desarrollo.
     *******************************************************************************************
     ** TESTS=1 PASS=1 FAIL=0 SKIP=0                     315.00           0.04       9856.14  **
     *******************************************************************************************
-  \end{verbatim}}
+  \end{lstlisting}}
 
   Este módulo examina un flujo de datos de alta definición y detecta el formato
   de transporte de manera exitosa. Detecta todos los estándares de vídeo que se
   probaron, del estándar SMPTE 292M-2006\@.
 
-  {\scriptsize\begin{verbatim}
+  {\tiny\begin{lstlisting}[caption= "Resultados \textit{test} de detector de número de línea.]
     Seeding Python random module with 1709476252
     Found test ln_detect.test_ln_detect
     running test_ln_detect (1/1)
@@ -428,7 +496,7 @@ durante el desarrollo.
     *******************************************************************************************
     ** TESTS=1 PASS=1 FAIL=0 SKIP=0                     285.00           0.05       9500.00  **
     *******************************************************************************************
-  \end{verbatim}}
+  \end{lstlisting}}
 
 \section{Pruebas de integración}
 
@@ -484,11 +552,11 @@ durante el desarrollo.
   Previamente ambos se probaron con la misma configuración, pero conectándolos
   con el complementario del IP de Altera y funcionaron correctamente. Es una
   verificación crucial antes de proceder a fases más avanzadas de \textit{testing}
-  o antes de desplegar el sistema en un entorno de producción. Dado que es una prueba
-  que se configura de forma manual y las mediciones se hacen de la misma forma, se optó
+  o antes de desplegar el sistema en un entorno de producción. AL tratarse de una prueba
+  que se configura de forma manual y como las mediciones se hacen de la misma forma, se optó
   por hacer solo la prueba con menos parámetros a configurar.
 
-  En el proceso de desarrollo, un resultado exitoso en la prueba de loopback facilita
+  En el proceso de desarrollo, un resultado exitoso en la prueba de \textit{loopback} facilita
   el diagnóstico y la resolución de problemas, ya que establece un punto de referencia
   de funcionamiento correcto. Cualquier desviación de este resultado en pruebas futuras
   puede ayudar a identificar problemas específicos con cambios en el diseño,
