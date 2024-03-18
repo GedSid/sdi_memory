@@ -26,7 +26,7 @@ headsepline, % Uncomment to get a line under the header
 %	INFORMACIÓN DE LA MEMORIA
 %----------------------------------------------------------------------------------------
 
-\thesistitle{Implementación de Interfaz SDI en FPGA} % El títulos de la memoria, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \ttitle
+\thesistitle{Diseño de interfaz digital serie para dispositivo lógico programable} % El títulos de la memoria, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \ttitle
 
 % Nombre del posgrado, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \degreename
 \posgrado{Carrera de Especialización en Sistemas Embebidos}
@@ -36,16 +36,16 @@ headsepline, % Uncomment to get a line under the header
 \director{Mg. Ing. Diego Marcelo Martin (FIUBA)} % El nombre del director, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \dirname
 %\codirector{Nombre del codirector (pertenencia)} % El nombre del codirector si lo hubiera, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \codirname.  Para activar este campo se debe descomentar la opción "codirector" en el comando \documentclass, línea 23.
 
-\juradoUNO{Dr. Ing. XXXXXX (UTN)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur1name
-\juradoDOS{Mg. Ing. XXXXXX (FIUBA)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur2name
-\juradoTRES{Esp. Ing. XXXXXX (FIUBA)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur3name
+\juradoUNO{Mg. Ing. Ramiro Alonso (FIUBA)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur1name
+\juradoDOS{Esp. Ing. Santiago Esteva (FIUBA)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur2name
+\juradoTRES{Ing. Raul Florentin (FIUBA)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur3name
 
 \ciudad{Ciudad Autónoma de Buenos Aires}
 
 \fechaINICIO{octubre de 2020}
-\fechaFINAL{junio de 2024}
+\fechaFINAL{abril de 2024}
 
-\keywords{Sistemas Embebidos, FPGA, Video Digital, FIUBA} % Keywords for your thesis, print it elsewhere with \keywordnames
+\keywords{Sistemas Embebidos, FPGA, Video Digital, SDI, FIUBA} % Keywords for your thesis, print it elsewhere with \keywordnames
 
 \begin{document}
 
@@ -61,7 +61,20 @@ headsepline, % Uncomment to get a line under the header
 %The Thesis Abstract is written here (and usually kept to just this page). The page is kept centered vertically so can expand into the blank space above the title too\ldots
 \centering
 
-TBD
+En esta memoria se describe el diseño e implementación de un módulo de interfaz
+digital serie de triple velocidad para dispositivos lógicos programables,
+proporcionando una solución integral para la manipulación y transmisión
+de señales de video digital a través de interfaces de definición estándar, de
+alta definición y ultra alta definición.
+
+El trabajo implica el diseño y verificación de un sistema flexible y eficiente
+capaz de adaptarse dinámicamente a las diferentes tasas de datos y formatos de
+video especificados en los estándares internacionales. El módulo desarrollado
+es capaz de codificar y decodificar señales de video, gestionar la inserción y
+extracción de metadatos, y asegurar la integridad de la señal a través
+de mecanismos de corrección de errores. Los resultados demuestran la viabilidad
+del diseño para aplicaciones de video, proveyendo una base para futuras
+investigaciones y desarrollos en el campo de las comunicaciones de video digital.
 
 \end{abstract}
 
@@ -71,7 +84,8 @@ TBD
 %\addchaptertocentry{\acknowledgementname} % Descomentando esta línea se puede agregar los agradecimientos al índice
 \vspace{1.5cm}
 
-Quisiera agradecer al tutor del trabajo, mis compañeros de la carrera y familiares que permitieron completar este documento.
+Quisiera agradecer al tutor del trabajo, mis compañeros de la carrera
+y familiares que permitieron completar este documento.
 
 \end{acknowledgements}
 
@@ -90,19 +104,20 @@ Quisiera agradecer al tutor del trabajo, mis compañeros de la carrera y familia
 \pagestyle{thesis} % Return the page headers back to the "thesis" style
 
 \include{Chapters/Chapter1}
-\include{Chapters/Chapter2} 
+\include{Chapters/Chapter2}
 \include{Chapters/Chapter3}
-\include{Chapters/Chapter4} 
-\include{Chapters/Chapter5} 
+\include{Chapters/Chapter4}
+\include{Chapters/Chapter5}
 
 %   CONTENIDO DE LA MEMORIA  - APÉNDICES
 
-% \appendix % indicativo para indicarle a LaTeX los siguientes "capítulos" son apéndices
+\appendix % indicativo para indicarle a LaTeX los siguientes "capítulos" son apéndices
 
 % Incluir los apéndices de la memoria como archivos separadas desde la carpeta Appendices
 % Descomentar las líneas a medida que se escriben los apéndices
 
-% \include{Appendices/AppendixA}
+% \include{Chapters/apendice}
+\include{Appendices/AppendixA}
 % \include{Appendices/AppendixB}
 
 %	BIBLIOGRAPHY
@@ -111,4 +126,4 @@ Quisiera agradecer al tutor del trabajo, mis compañeros de la carrera y familia
 \raggedright
 \printbibliography[heading=bibintoc]
 
-\end{document}  
+\end{document}

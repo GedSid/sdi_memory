@@ -33,4 +33,4 @@ jobs:
           VALIDATE_LATEX: true
           # VALIDATE_MARKDOWN: true
           # VALIDATE_NATURAL_LANGUAGE: true
-          BASH_SEVERITY: "error"
+          BASH_SEVERITY: "warning"

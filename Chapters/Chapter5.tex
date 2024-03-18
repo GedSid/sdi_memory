@@ -1,10 +1,107 @@
-\chapter{Conclusiones}
-\label{Chapter5}
+\chapter{Conclusiones}\label{Chapter5}
 
-\section{Req}
+El capítulo final muestra los resultados alcanzados con el trabajo e informa las
+mejoras necesarias a futuro.
 
-\section{Infraestructura para el Desarrollo}
+\section{Resultados obtenidos}
 
-\section{Estructura General del Sistema}
+% El funcionamiento del dispositivo es el esperado.
+% La cantidad de recursos utilizados es la esperada. 
+% Es mejor usar software abierto.
+% La implementación de test mediante python, pytest y cocotb facilito mucho el desarrollo.
+% El CI ayudo a encontrar problema que surgian en algún móídulo mientras se desarrollava otro.
 
-\section{{Planificación}}
+% Hacer un desarrollo basado en una norma supuso un desafío extra
+
+% En el desarrollo del trabajo se aplican los conocimientos adquiridos durante la
+% cursada de la carrera de especialización, en particular las asignaturas de gestión
+% de proyectos, Programación de microcontroladores, diseño de circuitos impresos,
+% diseño para la manufacturabilidad e ingeniería de software en sistemas embebi-
+% dos. El aprendizaje adquirido sobre la gestión de problemas, estructuración de
+% tareas y prevención de retrasos permite finalizar la carrera con una visión com-
+% pleta sobre un sistema embebido.
+
+En el desarrollo de este trabajo, que consistió en el diseño de un módulo SDI
+de triple tasa de datos para dispositivos lógicos programables, se han
+alcanzado satisfactoriamente los objetivos planteados al inicio del trabajo
+considerando que que solo uno de los supuestos iniciales se cumplió. El
+dispositivo diseñado funciona según lo esperado, cumpliendo con las
+especificaciones establecidas en la fase de diseño. Este éxito demuestra la
+viabilidad del enfoque adoptado y de la funcionalidad del módulo desarrollado.
+
+Una de las conclusiones clave de este trabajo es que la cantidad de recursos
+de FPGA utilizados se alineó estrechamente con las proyecciones iniciales.
+Este resultado subraya la precisión en la planificación y la eficiencia del
+diseño. Además, el uso de herramientas de código abierto a lo largo de la gran
+mayoría del trabajo no solo demostró ser viable, sino también preferible.
+Proporcionó una mayor flexibilidad y control sobre el proceso de desarrollo,
+permitiendo ajustes y modificaciones de manera ágil y eficiente, lo cual fue
+crucial para el éxito del trabajo.
+
+El proceso de implementación de pruebas, utilizando herramientas como Python,
+Pytest y Cocotb, simplificó significativamente el desarrollo. Esta estrategia
+facilitó una verificación eficaz y eficiente del diseño, permitiendo detectar
+y corregir errores de manera temprana. La adopción de prácticas de integración
+continua tuvo un rol fundamental en el mantenimiento de la integridad del
+trabajo. Permitió identificar problemas que surgían en algunos módulos mientras
+se desarrollaban otros, asegurando así que el trabajo avanzara de manera
+cohesiva y consistente.
+
+Abordar el diseño basándose en una normativa específica presentó desafíos
+adicionales, pero también estableció un marco de referencia claro que guió el
+desarrollo. Este enfoque normativo no solo aseguró la compatibilidad y el
+cumplimiento del módulo SDI desarrollado, sino que también proporcionó una
+estructura organizativa que facilitó el manejo de la complejidad del trabajo.
+Además, la documentación de dispositivos similares fue de gran utilidad a la
+resolver dudas de implementación y estructurar el flujo de datos.
+
+Durante el desarrollo de este trabajo, se aplicaron de manera integral los
+conocimientos adquiridos a lo largo de la carrera de especialización. Las
+habilidades y conceptos aprendidos en temáticas como gestión de proyectos,
+programación de dispositivos lógicos programables, definición de
+requerimientos, especificaciones y pruebas para verificación y validación y
+diseño para la reutilización y mutabilidad fueron fundamentales para el éxito
+del trabajo. Esta aplicación práctica de la teoría a un proyecto complejo y
+desafiante no solo reforzó estos conocimientos, sino que también proporcionó
+una experiencia enriquecedora.
+
+Finalmente, este trabajo no solo cumplió con la gran mayoría de los objetivos
+técnicos propuestos, sino que también sirvió como una valiosa experiencia de
+aprendizaje. Demostró la importancia de combinar la teoría con la práctica en
+el campo de la ingeniería y subrayó el valor de un enfoque metodológico y
+reflexivo en el desarrollo de soluciones tecnológicas avanzadas. Este trabajo
+prepara el terreno para futuras investigaciones y desarrollos.
+
+\section{Trabajo futuro}
+
+% Llevar el modulo hasta los estandares de 12G.
+% Terminar de testear los formatos restantes.
+% Agregar formal verification a los módulos.
+% Implementar los test funcionales en UVM para que el testeo sea estandar.
+% Probar en los equipos de la empresa VideoSwitch.
+% Hacer mediciones con equipamiento específico para los estandares y con capacidad de análizar la integridad de la señal de TV.
+
+Mirando hacia el futuro, existen varias áreas en las que el trabajo podría
+expandirse y mejorar. Uno de los objetivos principales sería llevar el módulo
+hasta los estándares de 12G, lo que ampliaría significativamente su aplicabilidad
+y permitiría su uso en una gama más amplia de aplicaciones de alta velocidad.
+Además, sería crucial terminar de probar los formatos restantes para asegurar
+una compatibilidad y funcionalidad completas del módulo en diferentes escenarios
+de uso.
+
+La adición de verificación formal a los módulos representaría un paso adelante
+en el aseguramiento de la calidad y la confiabilidad del diseño. Esta
+metodología puede ayudar a identificar problemas que no son fácilmente
+detectables mediante pruebas convencionales. Implementar las pruebas funcionales
+en UVM (del inglés, \textit{Universal Verification Methodology}) estándarizaría el
+proceso de verificación, facilitando la reutilización de los \textit{test} y
+mejorando la eficiencia del proceso de verificación. Se plantea el uso de PyUVM,
+que se integra perfectamente con Cocotb, presenta todas las funcionalidades de
+UVM en SystemVerilog, pero al estar basado en Python agiliza el desarrollo.
+
+Además, sería valioso probar el módulo en equipos específicos de la empresa
+VideoSwitch, lo que proporcionaría una validación final del diseño en un entorno
+de producción real. Por último, realizar mediciones con equipamiento específico
+para los estándares y con capacidad de analizar la integridad de la señal de
+televisión sería esencial para garantizar que el módulo cumple con los requisitos
+de calidad y rendimiento más exigentes.

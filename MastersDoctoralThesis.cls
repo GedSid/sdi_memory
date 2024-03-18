@@ -40,6 +40,7 @@
 \newbool{toctoc}
 \newbool{parskip}
 \newbool{headsepline}
+% \RequirePackage[paper=portrait,pagesize]{typearea}
 
 \DeclareOption{codirector}{\booltrue{codirector}}
 \DeclareOption{nolistspacing}{\booltrue{nolistspace}}
